@@ -6,81 +6,48 @@
 #Título: Shell script con interfaz gráfica para gestión de usuarios, procesos y servicios
 #==========================================================================================
 
-#1) Gestión de usuarios y grupos
-    #a) Crear usuario
-    #b) Buscar usuario
-        #b.1) Modificar datos del usuario
-        #b.2) Borrar usuario
-    #c) Consultar último usuario creado
-    #d) Crear grupo
-    #e) Buscar grupo
-        #e.1) Modificar datos del grupo
-        #e.2) Añadir o quitar miembros
-        #e.3) Borrar grupo
-
-#2) Gestión de procesos
-    #a) Consultar procesos activos en este momento
-    #b) Consultar cantidad de memoria libre
-    #c) Consultar cuánto tiempo lleva el servidor encendido
-    #d) Consultar quién está logeado en el sistema
-    #e) Consultar los 10 procesos que más memoria están consumiendo
-
-#3) Gestión de servicios
-    #a) Mostrar servicios activos en este momento
-    #b) Mostrar tiempo que ha tardado el equipo en arrancar
-    #c) Mostrar cuánto han tardado los procesos en arrancar
-    #d) Mostrar servicios disponibles y seleccionar
-        #d.1) Arrancar o detener servicio seleccionado (solo 1, opción tipo radio)
-
-#4) Información del sistema
-    #a) 
-
-#q) Salir del menú
-
-#==========================================================================================
-
 # VARIABLES
 
 #==========================================================================================
 
 # FUNCIONES
 
+#Para lanzar el resultado de un comando: $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
+
 function menu() {
     clear
-    echo
-    echo -e "\t\t\tAdmin Menu\n"
-    echo -e "\t1. Display Total Disk Space"
-    echo -e "\t2. Display All Logged in Users"
-    echo -e "\t3. Display Memory Usage"
-    echo -e "\t0. Exit Menu\n\n"
-    echo -en "\t\tEnter an Option: "
-    read -n 1 selection
+    option=$(whiptail --title "Administración del Sistema" --menu "Elige una opción" 15 60 4 \
+        "1" "Gestión de usuarios" \
+        "2" "Gestión de procesos" \
+        "3" "Gestión de servicios" \
+        "0" "Salir" 3>&1 1>&2 2>&3)
+
+    selected_option=$?
+    echo $?
 }
 
 #==========================================================================================
 
 # Inicio del script
 
-clear
-
 while [[ true ]]; do
     menu
-    case $selection in
-    a)
-        echo "TO DO"
+    case $selected_option in
+    1)
+        whiptail --infobox "Opción 1" 40 80
         ;;
-    b)
-        echo "TO DO"
+    2)
+        whiptail --infobox "Opción 2" 40 80
         ;;
-    c)
-        echo "TO DO"
+    3)
+        whiptail --infobox "Opción 3" 40 80
         ;;
-    q)
-        echo "Saliendo"
-        break
+    0)
+        whiptail --infobox "Saliendo" 40 80
+        exit
         ;;
     *)
-        echo "Opción inválida."
+        whiptail --infobox "Opción inválida. Elige otra opción." 40 80
         ;;
     esac
 done
