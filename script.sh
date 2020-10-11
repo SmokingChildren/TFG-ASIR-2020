@@ -22,7 +22,6 @@ function menu() {
         "3" "Gestión de servicios" \
         "0" "Salir" 3>&1 1>&2 2>&3)
 
-    selected_option=$?
     echo $?
 }
 
@@ -32,22 +31,22 @@ function menu() {
 
 while [[ true ]]; do
     menu
-    case $selected_option in
+    case $option in
     1)
-        whiptail --infobox "Opción 1" 40 80
+        whiptail --title "Mensaje" --msgbox "Opción 1" 40 80
         ;;
     2)
-        whiptail --infobox "Opción 2" 40 80
+        whiptail --title "Mensaje" --msgbox "Opción 2" 40 80
         ;;
     3)
-        whiptail --infobox "Opción 3" 40 80
+        whiptail --title "Mensaje" --msgbox "Opción 3" 40 80
         ;;
     0)
-        whiptail --infobox "Saliendo" 40 80
+        whiptail --title "Mensaje" --msgbox "Saliendo" 40 80
         exit
         ;;
     *)
-        whiptail --infobox "Opción inválida. Elige otra opción." 40 80
+        whiptail --title "Mensaje" --msgbox "Opción inválida. Elige otra opción." 40 80
         ;;
     esac
 done
