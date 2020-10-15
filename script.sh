@@ -34,6 +34,24 @@ function user_mgt_menu() {
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
+function process_mgt_menu(){
+    usermenu_option=$(whiptail --title "Gestión de procesos" --menu "Seleccione una opción" 10 60 4 \
+    "1" "Procesos activos." \
+    "2" "Modificar datos de usuario." \
+    "3" "Eliminar usuario del sistema." \
+    "4" "Ver información de usuario." \
+    "0" "Volver" 3>&1 1>&2 2>&3)
+}
+
+function services_mgt_menu(){
+    usermenu_option=$(whiptail --title "Gestión de servicios" --menu "Seleccione una opción" 10 60 4 \
+    "1" "Añadir nuevo usuario." \
+    "2" "Modificar datos de usuario." \
+    "3" "Eliminar usuario del sistema." \
+    "4" "Ver información de usuario." \
+    "0" "Volver" 3>&1 1>&2 2>&3)
+}
+
 #==========================================================================================
 
 # Inicio del script
