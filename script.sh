@@ -128,7 +128,7 @@ while [[ true ]]; do
         exit
         ;;
     *)
-        whiptail --title "Mensaje" --infobox "Opción inválida. Elige otra opción." 40 80
+        whiptail --title "Mensaje" --msgbox "Opción inválida. Elige otra opción." 40 80
         ;;
     esac
 done
