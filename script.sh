@@ -21,8 +21,6 @@ function mainmenu() {
         "2" "Gestión de procesos" \
         "3" "Gestión de servicios" \
         "0" "Salir" 3>&1 1>&2 2>&3)
-
-    echo $?
 }
 
 function user_mgt_menu() {
@@ -37,18 +35,18 @@ function user_mgt_menu() {
 function process_mgt_menu(){
     usermenu_option=$(whiptail --title "Gestión de procesos" --menu "Seleccione una opción" 10 60 4 \
     "1" "Procesos activos." \
-    "2" "Modificar datos de usuario." \
-    "3" "Eliminar usuario del sistema." \
-    "4" "Ver información de usuario." \
+    "2" "Procesos que más consumen en este momento (max. 10)." \
+    "3" "Detener procesos (submenú)." \
+    "4" "Opcion no implementada." \
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
 function services_mgt_menu(){
     usermenu_option=$(whiptail --title "Gestión de servicios" --menu "Seleccione una opción" 10 60 4 \
-    "1" "Añadir nuevo usuario." \
-    "2" "Modificar datos de usuario." \
-    "3" "Eliminar usuario del sistema." \
-    "4" "Ver información de usuario." \
+    "1" "Información del sistema." \
+    "2" "Memoria en uso y memoria disponible." \
+    "3" "Tiempo que lleva el servidor en marcha." \
+    "4" "Distribución de discos duros / particiones." \
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
