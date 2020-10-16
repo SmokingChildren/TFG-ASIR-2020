@@ -33,7 +33,7 @@ function user_mgt_menu() {
 }
 
 function process_mgt_menu(){
-    processmenu_option=$(whiptail --title "Gestión de procesos" --menu "Seleccione una opción" 15 50 5 \
+    processmenu_option=$(whiptail --title "Gestión de procesos" --menu "Seleccione una opción" 15 65 5 \
     "1" "Ver procesos activos." \
     "2" "Ver procesos que más consumen en este momento (max. 10)." \
     "3" "Detener o arrancar procesos." \
@@ -42,7 +42,7 @@ function process_mgt_menu(){
 }
 
 function services_mgt_menu(){
-    servicesmenu_option=$(whiptail --title "Gestión de servicios" --menu "Seleccione una opción" 15 50 5 \
+    servicesmenu_option=$(whiptail --title "Gestión de servicios" --menu "Seleccione una opción" 15 65 5 \
     "1" "Información del sistema." \
     "2" "Memoria en uso y memoria disponible." \
     "3" "Tiempo que lleva el servidor en marcha." \
@@ -88,7 +88,7 @@ while [[ true ]]; do
                 ;;
             2)
                 #Procesos que más consumen en este momento (max. 10)
-                whiptail --textbox /dev/stdin 50 60 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
+                whiptail --textbox /dev/stdin 20 40 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
                 ;;
             3)
                 whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80
@@ -108,19 +108,19 @@ while [[ true ]]; do
             services_mgt_menu
             case $servicesmenu_option in
             1) #"nformación del sistema.
-                whiptail --textbox /dev/stdin 30 40 <<<"$(hostnamectl)"
+                whiptail --textbox /dev/stdin 20 60 <<<"$(hostnamectl)"
                 ;;
             2)
                 #Memoria en uso y memoria disponible
-                whiptail --textbox /dev/stdin 30 40 <<<"$(free)"
+                whiptail --textbox /dev/stdin 15 90 <<<"$(free)"
                 ;;
             3)
                 #Tiempo que lleva el servidor en marcha.
-                whiptail --textbox /dev/stdin 30 40 <<<"$(uptime)"
+                whiptail --textbox /dev/stdin 10 70 <<<"$(uptime)"
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación
-                whiptail --textbox /dev/stdin 30 40 <<<"$(df -h)"
+                whiptail --textbox /dev/stdin  30 90 <<<"$(df -h)"
                 ;;
             0)
                 break 
