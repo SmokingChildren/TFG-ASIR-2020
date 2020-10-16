@@ -106,7 +106,8 @@ while [[ true ]]; do
         while [[ true ]]; do
             services_mgt_menu
             case $servicesmenu_option in
-            1) whiptail --title "Mensaje" --msgbox "Información del sistema." 40 80
+            1) #whiptail --title "Mensaje" --msgbox "Información del sistema." 40 80
+                whiptail --textbox /dev/stdin 40 80 <<<"$(hostnamectl)"
                 ;;
             2)
                 whiptail --title "Mensaje" --msgbox "Memoria en uso y memoria disponible." 40 80
