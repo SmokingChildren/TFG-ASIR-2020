@@ -46,7 +46,7 @@ function services_mgt_menu(){
     "1" "Información del sistema." \
     "2" "Memoria en uso y memoria disponible." \
     "3" "Tiempo que lleva el servidor en marcha." \
-    "4" "Distribución de discos duros / particiones." \
+    "4" "Capacidad disponible de discos duros / particiones." \
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
@@ -87,7 +87,8 @@ while [[ true ]]; do
             1) whiptail --title "Mensaje" --msgbox "Procesos activos" 40 80
                 ;;
             2)
-                whiptail --title "Mensaje" --msgbox "Procesos que más consumen en este momento (max. 10)." 40 80
+                #Procesos que más consumen en este momento (max. 10)
+                whiptail --textbox /dev/stdin 50 60 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
                 ;;
             3)
                 whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80
@@ -106,17 +107,20 @@ while [[ true ]]; do
         while [[ true ]]; do
             services_mgt_menu
             case $servicesmenu_option in
-            1) #whiptail --title "Mensaje" --msgbox "Información del sistema." 40 80
-                whiptail --textbox /dev/stdin 40 80 <<<"$(hostnamectl)"
+            1) #"nformación del sistema.
+                whiptail --textbox /dev/stdin 30 40 <<<"$(hostnamectl)"
                 ;;
             2)
-                whiptail --title "Mensaje" --msgbox "Memoria en uso y memoria disponible." 40 80
+                #Memoria en uso y memoria disponible
+                whiptail --textbox /dev/stdin 30 40 <<<"$(free)"
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Tiempo que lleva el servidor en marcha." 40 80
+                #Tiempo que lleva el servidor en marcha.
+                whiptail --textbox /dev/stdin 30 40 <<<"$(uptime)"
                 ;;
             4)
-                whiptail --title "Mensaje" --msgbox "Distribución de discos duros / particiones." 40 80
+                #Distribución de discos duros / particiones y su ocupación
+                whiptail --textbox /dev/stdin 30 40 <<<"$(df -h)"
                 ;;
             0)
                 break 
