@@ -50,6 +50,10 @@ function services_mgt_menu(){
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
+function password_ask(){
+    password=$(whiptail --passwordbox "Introduce contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
+    passwordcheck=$(whiptail --passwordbox "Introduce confirmación de contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
+}
 #==========================================================================================
 
 # Inicio del script
@@ -62,7 +66,12 @@ while [[ true ]]; do
         while [[ true ]]; do
             user_mgt_menu
             case $usermenu_option in
-            1) whiptail --title "Mensaje" --msgbox "Añadir usuario" 40 80
+            1) #whiptail --title "Mensaje" --msgbox "Añadir usuario" 40 80
+                nombre=$(whiptail --inputbox "Introduce el nombre de usuario" 8 39 Nombre --title "Ejemplo" 3>&1 1>&2 2>&3)
+                until [[ password == passwordcheck ]] do
+                    password_ask
+                done
+                whiptail --title "Mensaje" --msgbox "El nombre es $nombre y la contraseña es $password." 40 80
                 ;;
             2)
                 whiptail --title "Mensaje" --msgbox "Modificar usuario" 40 80
