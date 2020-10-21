@@ -14,13 +14,13 @@
 
 #Para lanzar el resultado de un comando: $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
 
-function mainmenu() {
+function mainmenu() { #De este menú derivan el resto de submenús.
     clear
     mainmenu_option=$(whiptail --title "Administración del Sistema" --menu "Elige una opción" 25 60 4 \
         "1" "Gestión de usuarios" \
         "2" "Gestión de procesos" \
         "3" "Gestión de servicios" \
-        "0" "Salir" 3>&1 1>&2 2>&3)
+        "0" "Salir" 3>&1 1>&2 2>&3) #Esto último intercambia stdin y stderr.
 }
 
 function user_mgt_menu() {
@@ -58,13 +58,12 @@ function password_ask(){
 
 # Inicio del script
 
-while [[ true ]]; do
+while [[ true ]]; do #Se puede hacer con condición expresamente, pero no es necesario.
     mainmenu
     case $mainmenu_option in
     1)
-        #whiptail --title "Mensaje" --msgbox "Opción 1" 40 80
         while [[ true ]]; do
-            user_mgt_menu
+            user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1) #whiptail --title "Mensaje" --msgbox "Añadir usuario" 40 80
                 nombre=$(whiptail --inputbox "Introduce el nombre de usuario" 8 39 Nombre --title "Ejemplo" 3>&1 1>&2 2>&3)
@@ -76,13 +75,13 @@ while [[ true ]]; do
                 whiptail --title "Mensaje" --msgbox "El nombre es $nombre y la contraseña es $password." 40 80 #TO-DO: Cambiar por un useradd con los argumentos
                 ;;
             2)
-                whiptail --title "Mensaje" --msgbox "Modificar usuario" 40 80
+                whiptail --title "Mensaje" --msgbox "Modificar usuario" 40 80 #Estos mensajes hay que sustituirlos por las funciones correspondientes.
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80
+                whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80 #TO-DO: Añadir confirmación de eliminación.
                 ;;
             4)
-                whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80
+                whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80 #Grupos, carpetas y algo más de info (TBD).
                 ;;
             0)
                 break 
@@ -90,22 +89,21 @@ while [[ true ]]; do
             esac
         done
         ;;
-    2)
-        #whiptail --title "Mensaje" --msgbox "Opción 2" 40 80
+    2)        
         while [[ true ]]; do
-            process_mgt_menu
+            process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
-            1) whiptail --title "Mensaje" --msgbox "Procesos activos" 40 80
+            1) whiptail --title "Mensaje" --msgbox "Procesos activos" 40 80 #TO-DO: ¿Mostrar resultado de un ps o un top?
                 ;;
             2)
                 #Procesos que más consumen en este momento (max. 10)
                 whiptail --textbox /dev/stdin 20 40 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80
+                whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80 #TO-DO: Bucle for, mostrar procesos en opciones radio, detener proceso seleccionado.
                 ;;
             4)
-                whiptail --title "Mensaje" --msgbox "Opcion no implementada." 40 80
+                whiptail --title "Mensaje" --msgbox "Opcion no implementada (Placeholder)." 40 80 #TBD. 
                 ;;
             0)
                 break 
@@ -114,11 +112,10 @@ while [[ true ]]; do
         done
         ;;
     3)
-        #whiptail --title "Mensaje" --msgbox "Opción 3" 40 80
         while [[ true ]]; do
-            services_mgt_menu
+            services_mgt_menu #Gestión de servicios y sistema
             case $servicesmenu_option in
-            1) #"nformación del sistema.
+            1) #Información del sistema.
                 whiptail --textbox /dev/stdin 20 60 <<<"$(hostnamectl)"
                 ;;
             2)
@@ -140,11 +137,11 @@ while [[ true ]]; do
         done
         ;;
     0)
-        whiptail --title "Mensaje" --msgbox "Saliendo" 40 80
+        whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
         exit
         ;;
     *)
-        whiptail --title "Mensaje" --msgbox "Opción inválida. Elige otra opción." 40 80
+        whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
         ;;
     esac
 done
