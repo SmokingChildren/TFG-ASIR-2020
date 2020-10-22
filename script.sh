@@ -72,7 +72,7 @@ while [[ true ]]; do #Se puede hacer con condición expresamente, pero no es nec
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
                     password_ask
                 done
-                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre
+                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre #¿Añadir sudo o lanzar script como sudo?
                 whiptail --title "Mensaje" --msgbox "Usuario $nombre registrado correctamente." 40 80 #TO-DO: Condicional comprobando que no falla.
                 ;;
             2)
