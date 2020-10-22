@@ -69,10 +69,11 @@ while [[ true ]]; do #Se puede hacer con condición expresamente, pero no es nec
                 nombre=$(whiptail --inputbox "Introduce el nombre de usuario" 8 39 Nombre --title "Ejemplo" 3>&1 1>&2 2>&3)
                 password_ask
                 until [[ $password == $passwordcheck ]]; do
-                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 40 80
+                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
                     password_ask
                 done
-                whiptail --title "Mensaje" --msgbox "El nombre es $nombre y la contraseña es $password." 40 80 #TO-DO: Cambiar por un useradd con los argumentos
+                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre
+                whiptail --title "Mensaje" --msgbox "Usuario $nombre registrado correctamente." 40 80 #TO-DO: Condicional comprobando que no falla.
                 ;;
             2)
                 whiptail --title "Mensaje" --msgbox "Modificar usuario" 40 80 #Estos mensajes hay que sustituirlos por las funciones correspondientes.

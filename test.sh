@@ -18,3 +18,5 @@ nombre=$(whiptail --inputbox "Introduce texto" 8 39 Nombre --title "Ejemplo" 3>&
 password=$(whiptail --passwordbox "Introduce password" 8 39 --title "Password" 3>&1 1>&2 2>&3)
 echo "El nombre es " $nombre
 echo "La contraseña es " $password
+
+sudo useradd -m --password $(echo $password | openssl passwd -1 -stdin) $nombre
