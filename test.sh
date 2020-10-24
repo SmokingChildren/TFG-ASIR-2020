@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function color_menu() {
     colormenu=$(whiptail --title "Elección de colores" --nocancel --radiolist "Elige una opción" 25 60 4 \
