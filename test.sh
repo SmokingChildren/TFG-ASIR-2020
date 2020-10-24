@@ -1,11 +1,11 @@
 #!/bin/bash
 
 function color_menu() {
-    colormenu=$(whiptail --title "Elección de colores" --nocancel --radiolist "Elige una opción" 25 60 4 \
-        "1" "Color 1" \
-        "2" "Color 2" \
-        "3" "Color 3" \
-        "0" "Salir" 3>&1 1>&2 2>&3)
+    colormenu=$(whiptail --title "Colores" --radiolist "Elige un color" 20 78 4 \
+        "1" "Rojo" ON \
+        "2" "Azul" OFF \
+        "3" "Verde" OFF \
+        "0" "Salir" OFF)
 }
 
 while [[ true ]]; do
