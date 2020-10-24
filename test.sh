@@ -1,7 +1,7 @@
 #!/bin/sh
 
-color_menu() {
-    colormenu=$(whiptail --title "Administración del Sistema" --nocancel --radiolist "Elige una opción" 25 60 4 \
+function color_menu() {
+    colormenu=$(whiptail --title "Elección de colores" --nocancel --radiolist "Elige una opción" 25 60 4 \
         "1" "Color 1" \
         "2" "Color 2" \
         "3" "Color 3" \
@@ -41,5 +41,7 @@ while [[ true ]]; do
     0)
         break
         ;;
+    *)
+        whiptail --msgbox "Error" 0 0
     esac
 done
