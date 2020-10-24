@@ -9,12 +9,12 @@ color_menu() {
         "0" "Salir" 3>&1 1>&2 2>&3)
 }
 
-while [[ true ]]; do
-
+while [[ true ]]; 
+do
     color_menu
     case $colormenu in
     1)
-        NEWT_COLORS='
+    export NEWT_COLORS='
     window=,red
     border=white,red
     textbox=white,red
@@ -23,7 +23,7 @@ while [[ true ]]; do
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
     2)
-        NEWT_COLORS='
+    export NEWT_COLORS='
     window=,blue
     border=white,blue
     textbox=white,blue
@@ -32,7 +32,7 @@ while [[ true ]]; do
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
     3)
-        NEWT_COLORS='
+    export NEWT_COLORS='
     window=,green
     border=white,green
     textbox=white,green
