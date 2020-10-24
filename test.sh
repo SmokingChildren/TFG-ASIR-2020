@@ -9,7 +9,7 @@ function color_menu() {
 }
 
 while [[ true ]]; do
-    color_menu
+    colormenu
     case $colormenu in
     1)
         export NEWT_COLORS='
