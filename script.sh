@@ -139,7 +139,7 @@ while [[ true ]]; do
                 ;;
             2)
                 #Memoria en uso y memoria disponible
-                whiptail --textbox /dev/stdin 15 90 <<<"$(free)"
+                whiptail --textbox /dev/stdin 15 90 <<<"$(free --si -hw)"
                 ;;
             3)
                 #Tiempo que lleva el servidor en marcha.
