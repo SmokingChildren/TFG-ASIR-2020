@@ -43,5 +43,6 @@ while [[ true ]]; do
         ;;
     *)
         whiptail --msgbox "Error" 0 0
+        ;;
     esac
 done
