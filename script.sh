@@ -56,10 +56,10 @@ function services_mgt_menu() {
 
 function color_change_menu() {
     colormenuoption=$(whiptail --title "Colores" --nocancel --menu "Elige un color" 15 65 4 \
-        "1" "Rojo" \
-        "2" "Azul" \
-        "3" "Verde" \
-        "0" "Salir" 3>&1 1>&2 2>&3)
+    "1" "Rojo" \
+    "2" "Azul" \
+    "3" "Verde" \
+    "0" "Salir" 3>&1 1>&2 2>&3)
 }
 
 function password_ask() {
@@ -176,7 +176,7 @@ while [[ true ]]; do
                 textbox=white,red
                 button=black,white
                 '
-                whiptail --msgbox "Muestra de colores" 0 0
+                whiptail --msgbox "Test" 0 0
                 ;;
             2)
                 export NEWT_COLORS='
@@ -185,7 +185,7 @@ while [[ true ]]; do
                 textbox=white,blue
                 button=black,white
                 '
-                whiptail --msgbox "Muestra de colores" 0 0
+                whiptail --msgbox "Test" 0 0
                 ;;
             3)
                 export NEWT_COLORS='
@@ -194,7 +194,7 @@ while [[ true ]]; do
                 textbox=white,green
                 button=black,white
                 '
-                whiptail --msgbox "Muestra de colores" 0 0
+                whiptail --msgbox "Test" 0 0
                 ;;
             0)
                 break
