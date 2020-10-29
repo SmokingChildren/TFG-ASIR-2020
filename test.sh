@@ -1,8 +1,8 @@
 #!/bin/bash
 
-function color_menu(){
+function color_change_menu(){
     clear
-    colormenu_opt=$(whiptail --title "Colores" --radiolist "Elige un color" 20 78 4 \
+    colormenu_option=$(whiptail --title "Colores" --radiolist "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
@@ -10,8 +10,8 @@ function color_menu(){
 }
 
 while [[ true ]]; do
-    color_menu
-    case $colormenu_opt in
+    color_change_menu
+    case $colormenu_option in
     10)
         export NEWT_COLORS='
         window=,red
@@ -40,7 +40,7 @@ while [[ true ]]; do
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
     00)
-        break
+        exit
         ;;
     *)
         whiptail --msgbox "Error" 0 0
