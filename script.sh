@@ -18,7 +18,6 @@
 #[ $UID != 0 ] && exec sudo $0 "$@"
 
 function mainmenu() { #De este menú derivan el resto de submenús.
-    clear
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
