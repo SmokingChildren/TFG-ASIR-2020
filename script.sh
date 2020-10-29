@@ -17,7 +17,7 @@
 #Si el script no se ha lanzado con sudo, lo inicia ahora para poder modificar usuarios.
 #[ $UID != 0 ] && exec sudo $0 "$@"
 
-function mainmenu { #De este menú derivan el resto de submenús.
+mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
@@ -31,7 +31,7 @@ function mainmenu { #De este menú derivan el resto de submenús.
     echo $?
 }
 
-function user_mgt_menu {
+user_mgt_menu() {
     echo "Menú usuarios"
     usermenu_option=$(
         whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
@@ -43,7 +43,7 @@ function user_mgt_menu {
     )
 }
 
-function process_mgt_menu {
+process_mgt_menu() {
     echo "Menú procesos"
     processmenu_option=$(
         whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
@@ -55,7 +55,7 @@ function process_mgt_menu {
     )
 }
 
-function services_mgt_menu {
+services_mgt_menu() {
     echo "Menú servicios"
     servicesmenu_option=$(
         whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
@@ -67,7 +67,7 @@ function services_mgt_menu {
     )
 }
 
-function color_change_menu {
+color_change_menu() {
     echo "Menú colores"
     colormenuoption=$(
         whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
@@ -78,7 +78,7 @@ function color_change_menu {
     )
 }
 
-function password_ask {
+password_ask() {
     password=$(whiptail --passwordbox "Introduce contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
     passwordcheck=$(whiptail --passwordbox "Introduce confirmación de contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
 }
