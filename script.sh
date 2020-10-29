@@ -35,7 +35,7 @@ function user_mgt_menu() {
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
-function process_mgt_menu(){
+function process_mgt_menu() {
     processmenu_option=$(whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
     "1" "Ver procesos activos." \
     "2" "Ver procesos que más consumen en este momento (max. 10)." \
@@ -44,7 +44,7 @@ function process_mgt_menu(){
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
-function services_mgt_menu(){
+function services_mgt_menu() {
     servicesmenu_option=$(whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
     "1" "Información del sistema." \
     "2" "Memoria en uso y memoria disponible." \
@@ -53,7 +53,7 @@ function services_mgt_menu(){
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
-function password_ask(){
+function password_ask() {
     password=$(whiptail --passwordbox "Introduce contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
     passwordcheck=$(whiptail --passwordbox "Introduce confirmación de contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
 }
