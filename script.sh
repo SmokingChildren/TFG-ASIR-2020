@@ -29,7 +29,6 @@ mainmenu() { #De este menú derivan el resto de submenús.
 }
 
 user_mgt_menu() {
-    echo "Menú usuarios"
     usermenu_option=$(
         whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
         "1" "Añadir un nuevo usuario." \
@@ -41,7 +40,6 @@ user_mgt_menu() {
 }
 
 process_mgt_menu() {
-    echo "Menú procesos"
     processmenu_option=$(
         whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
         "1" "Ver procesos activos." \
@@ -53,7 +51,6 @@ process_mgt_menu() {
 }
 
 services_mgt_menu() {
-    echo "Menú servicios"
     servicesmenu_option=$(
         whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
         "1" "Información del sistema." \
@@ -65,7 +62,6 @@ services_mgt_menu() {
 }
 
 color_change_menu() {
-    echo "Menú colores"
     colormenuoption=$(
         whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
