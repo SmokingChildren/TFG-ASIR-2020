@@ -54,12 +54,13 @@ function services_mgt_menu() {
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
-function color_change_menu() {
-    colormenuoption=$(whiptail --title "Selección de color" --nocancel --menu "Elige un color" 15 65 4 \
-    "1" "Rojo" \
-    "2" "Azul" \
-    "3" "Verde" \
-    "0" "Salir" 3>&1 1>&2 2>&3)
+function color_change_menu(){
+    colormenuoption=$(whiptail --title "Cambiar colores del menú" --radiolist \
+        "Elige un color" 20 78 4 \
+        "1" "Rojo" ON \
+        "2" "Azul" OFF \
+        "3" "Verde" OFF \
+        "0" "Salir" OFF 3>&1 1>&2 2>&3)
 }
 
 function password_ask() {
@@ -167,7 +168,7 @@ while [[ true ]]; do
         ;;
     4)
         while [[ true ]]; do
-        color_change_menu
+            color_change_menu
             case $colormenuoption in
             1)
                 export NEWT_COLORS='
@@ -176,7 +177,7 @@ while [[ true ]]; do
                 textbox=white,red
                 button=black,white
                 '
-                whiptail --msgbox "Test" 0 0
+                whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             2)
                 export NEWT_COLORS='
@@ -185,7 +186,7 @@ while [[ true ]]; do
                 textbox=white,blue
                 button=black,white
                 '
-                whiptail --msgbox "Test" 0 0
+                whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             3)
                 export NEWT_COLORS='
@@ -194,10 +195,13 @@ while [[ true ]]; do
                 textbox=white,green
                 button=black,white
                 '
-                whiptail --msgbox "Test" 0 0
+                whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             0)
                 break
+                ;;
+            *)
+                whiptail --msgbox "Error" 0 0
                 ;;
             esac
         done
