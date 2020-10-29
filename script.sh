@@ -19,7 +19,7 @@
 
 function mainmenu() { #De este menú derivan el resto de submenús.
     clear
-    echo "Función 1"
+    echo "Función 1 Paso 1"
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
@@ -28,6 +28,7 @@ function mainmenu() { #De este menú derivan el resto de submenús.
         "4" "Cambiar colores"
         "0" "Salir" 3>&1 1>&2 2>&3
     ) #Esto último intercambia stdin y stderr.
+    echo "Función 1 Paso 2"
 }
 
 function user_mgt_menu() {
@@ -65,8 +66,7 @@ function services_mgt_menu() {
 
 function color_change_menu() {
     colormenuoption=$(
-        whiptail --title "Cambiar colores del menú" --radiolist \
-        "Elige un color" 20 78 4 \
+        whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
