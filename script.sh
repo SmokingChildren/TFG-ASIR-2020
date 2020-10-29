@@ -19,10 +19,11 @@
 
 function mainmenu() { #De este menú derivan el resto de submenús.
     clear
-    mainmenu_option=$(whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 4 \
-        "1" "Gestión de usuarios" \
+    mainmenu_option=$(whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
+        "1" "Gestión de usuarios (requiere permiso de administrador)" \
         "2" "Gestión de procesos" \
         "3" "Gestión de servicios" \
+        "4" "Cambiar colores"
         "0" "Salir" 3>&1 1>&2 2>&3) #Esto último intercambia stdin y stderr.
 }
 
@@ -51,6 +52,16 @@ function services_mgt_menu() {
     "3" "Tiempo que lleva el servidor en marcha." \
     "4" "Capacidad disponible de discos duros / particiones." \
     "0" "Volver" 3>&1 1>&2 2>&3)
+}
+
+function color_change_menu(){
+    clear
+    colormenuoption=$(whiptail --title "Colores" --radiolist \
+        "Elige un color" 20 78 4 \
+        "1" "Rojo" ON \
+        "2" "Azul" OFF \
+        "3" "Verde" OFF \
+        "0" "Salir" OFF 3>&1 1>&2 2>&3)
 }
 
 function password_ask() {
@@ -152,6 +163,43 @@ while [[ true ]]; do
                 ;;
             0)
                 break 
+                ;;
+            esac
+        done
+        ;;
+    4)
+        while [[ true ]]; do
+        color_change_menu
+            case $colormenuoption in
+            1)
+                export NEWT_COLORS='
+                window=,red
+                border=white,red
+                textbox=white,red
+                button=black,white
+                '
+                whiptail --msgbox "Muestra de colores" 0 0
+                ;;
+            2)
+                export NEWT_COLORS='
+                window=,blue
+                border=white,blue
+                textbox=white,blue
+                button=black,white
+                '
+                whiptail --msgbox "Muestra de colores" 0 0
+                ;;
+            3)
+                export NEWT_COLORS='
+                window=,green
+                border=white,green
+                textbox=white,green
+                button=black,white
+                '
+                whiptail --msgbox "Muestra de colores" 0 0
+                ;;
+            0)
+                break
                 ;;
             esac
         done
