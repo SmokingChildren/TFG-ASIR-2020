@@ -19,6 +19,7 @@
 
 function mainmenu() { #De este menú derivan el resto de submenús.
     clear
+    echo "Función 1"
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
