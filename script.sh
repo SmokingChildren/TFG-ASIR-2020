@@ -26,8 +26,8 @@ function mainmenu() { #De este menú derivan el resto de submenús.
         "4" "Cambiar colores"
         "0" "Salir" 3>&1 1>&2 2>&3
     ) #Esto último intercambia stdin y stderr.
-    1>stdout.txt
-    2>stderr.txt
+    1>>stdout.txt
+    2>>stderr.txt
 }
 
 function user_mgt_menu() {
