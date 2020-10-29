@@ -1,13 +1,15 @@
 #!/bin/bash
 
-function color_change_menu(){
+function color_change_menu() {
     clear
-    colormenuoption=$(whiptail --title "Colores" --radiolist \
+    colormenuoption=$(
+        whiptail --title "Colores" --radiolist \
         "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
-        "0" "Salir" OFF 3>&1 1>&2 2>&3)
+        "0" "Salir" OFF 3>&1 1>&2 2>&3
+    )
 }
 
 while [[ true ]]; do
