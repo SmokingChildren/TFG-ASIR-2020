@@ -18,6 +18,7 @@
 #[ $UID != 0 ] && exec sudo $0 "$@"
 
 function mainmenu() { #De este menú derivan el resto de submenús.
+    clear
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
@@ -81,6 +82,7 @@ function password_ask() {
 # Inicio del script
 
 while :; do
+echo "Primer bucle"
     mainmenu
     case $mainmenu_option in
     1)
@@ -122,7 +124,6 @@ while :; do
                 ;;
             esac
         done
-        echo "Error en 1"
         ;;
     2)
         while [[ true ]]; do
@@ -149,7 +150,6 @@ while :; do
                 ;;
             esac
         done
-        echo "Error en 2"
         ;;
     3)
         while [[ true ]]; do
@@ -176,7 +176,6 @@ while :; do
                 ;;
             esac
         done
-        echo "Error en 3"
         ;;
     4)
         while [[ true ]]; do
@@ -214,7 +213,6 @@ while :; do
                 ;;
             esac
         done
-        echo "Error en 4"
         ;;
     0)
         whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
