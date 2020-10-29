@@ -1,6 +1,8 @@
 #!/bin/bash
 
-function color_change_menu() {
+colormenuoption=""
+
+color_change_menu() {
     clear
     colormenuoption=$(
         whiptail --title "Colores" --radiolist \
@@ -12,7 +14,7 @@ function color_change_menu() {
     )
 }
 
-while [[ true ]]; do
+while [ true ]; do
     color_change_menu
     case $colormenuoption in
     1)
