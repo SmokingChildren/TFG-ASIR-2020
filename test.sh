@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function color_menu() {
-    colormenu_opt=$(whiptail --title "Colores" --radiolist "Elige un color" 20 78 4 \
+    colormenu_opt=$(whiptail --title "Colores" --menu "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
