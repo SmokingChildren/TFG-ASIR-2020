@@ -7,13 +7,13 @@ function color_change_menu(){
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
-        "0" "Salir" OFF)
+        "0" "Salir" OFF 3>&1 1>&2 2>&3)
 }
 
 while [[ true ]]; do
     color_change_menu
     case $colormenuoption in
-    10)
+    1)
         export NEWT_COLORS='
         window=,red
         border=white,red
@@ -22,7 +22,7 @@ while [[ true ]]; do
         '
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
-    20)
+    2)
         export NEWT_COLORS='
         window=,blue
         border=white,blue
@@ -31,7 +31,7 @@ while [[ true ]]; do
         '
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
-    30)
+    3)
         export NEWT_COLORS='
         window=,green
         border=white,green
@@ -40,7 +40,7 @@ while [[ true ]]; do
         '
         whiptail --msgbox "Muestra de colores" 0 0
         ;;
-    00)
+    0)
         exit
         ;;
     *)

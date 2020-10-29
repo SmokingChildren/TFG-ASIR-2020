@@ -55,7 +55,7 @@ function services_mgt_menu() {
 }
 
 function color_change_menu() {
-    colormenuoption=$(whiptail --title "Colores" --nocancel --menu "Elige un color" 15 65 4 \
+    colormenuoption=$(whiptail --title "Selección de color" --nocancel --menu "Elige un color" 15 65 4 \
     "1" "Rojo" \
     "2" "Azul" \
     "3" "Verde" \
