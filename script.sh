@@ -28,6 +28,7 @@ function mainmenu() { #De este menú derivan el resto de submenús.
     ) #Esto último intercambia stdin y stderr.
     1>>stdout.txt
     2>>stderr.txt
+    echo $?
 }
 
 function user_mgt_menu() {
