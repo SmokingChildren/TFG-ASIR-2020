@@ -40,7 +40,6 @@ while [[ true ]]; do
         ;;
     00)
         break
-        exit
         ;;
     *)
         whiptail --msgbox "Error" 0 0
