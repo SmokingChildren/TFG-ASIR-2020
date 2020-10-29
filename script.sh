@@ -23,12 +23,9 @@ mainmenu() { #De este menú derivan el resto de submenús.
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
         "2" "Gestión de procesos" \
         "3" "Gestión de servicios" \
-        "4" "Cambiar colores"
+        "4" "Cambiar colores" \
         "0" "Salir" 3>&1 1>&2 2>&3
     ) #Esto último intercambia stdin y stderr.
-    1>>stdout.txt
-    2>>stderr.txt
-    echo $?
 }
 
 user_mgt_menu() {
@@ -87,9 +84,7 @@ password_ask() {
 # Inicio del script
 
 while :; do
-    echo "Primer bucle"
     mainmenu
-    echo "Primer bucle, post-menú"
     case $mainmenu_option in
     1)
         while [[ true ]]; do
@@ -224,10 +219,8 @@ while :; do
         whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
         exit
         ;;
-        # *)
-        #     whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
-        #     ;;
+    *)
+    whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
+    ;;
     esac
-    1>stdout.txt
-    2>stderr.txt
 done
