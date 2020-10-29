@@ -54,14 +54,12 @@ function services_mgt_menu() {
     "0" "Volver" 3>&1 1>&2 2>&3)
 }
 
-function color_change_menu(){
-    clear
-    colormenuoption=$(whiptail --title "Colores" --radiolist \
-        "Elige un color" 20 78 4 \
-        "1" "Rojo" ON \
-        "2" "Azul" OFF \
-        "3" "Verde" OFF \
-        "0" "Salir" OFF 3>&1 1>&2 2>&3)
+function color_change_menu() {
+    colormenuoption=$(whiptail --title "Colores" --nocancel --menu "Elige un color" 15 65 4 \
+        "1" "Rojo" \
+        "2" "Azul" \
+        "3" "Verde" \
+        "0" "Salir" 3>&1 1>&2 2>&3)
 }
 
 function password_ask() {
