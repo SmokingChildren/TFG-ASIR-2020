@@ -80,7 +80,7 @@ function password_ask() {
 
 # Inicio del script
 
-while [[ true ]]; do
+while :; do
     mainmenu
     case $mainmenu_option in
     1)
