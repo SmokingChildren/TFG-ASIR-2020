@@ -2,7 +2,8 @@
 
 function color_change_menu(){
     clear
-    colormenu_option=$(whiptail --title "Colores" --radiolist "Elige un color" 20 78 4 \
+    colormenuoption=$(whiptail --title "Colores" --radiolist \
+        "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
@@ -11,7 +12,7 @@ function color_change_menu(){
 
 while [[ true ]]; do
     color_change_menu
-    case $colormenu_option in
+    case $colormenuoption in
     10)
         export NEWT_COLORS='
         window=,red

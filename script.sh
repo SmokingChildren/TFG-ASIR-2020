@@ -15,7 +15,7 @@
 #Para lanzar el resultado de un comando (p. ej. "ls -l"): $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
 
 #Si el script no se ha lanzado con sudo, lo inicia ahora para poder modificar usuarios.
-[ $UID != 0 ] && exec sudo $0 "$@" 
+#[ $UID != 0 ] && exec sudo $0 "$@" 
 
 function mainmenu() { #De este menú derivan el resto de submenús.
     clear
@@ -69,6 +69,7 @@ while [[ true ]]; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1)
+                [ $UID != 0 ] && exec sudo $0 "$@" 
                 nombre=$(whiptail --inputbox "Introduce el nombre de usuario" 8 39 Nombre --title "Ejemplo" 3>&1 1>&2 2>&3)
                 password_ask
                 until [[ $password == $passwordcheck ]]; do
