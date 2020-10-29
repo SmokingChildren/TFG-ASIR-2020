@@ -20,8 +20,7 @@
 function mainmenu() { #De este menú derivan el resto de submenús.
     clear
     echo "Función 1 Paso 1"
-    mainmenu_option=$(
-        whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
+    mainmenu_option=$(whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
         "1" "Gestión de usuarios (requiere permiso de administrador)" \
         "2" "Gestión de procesos" \
         "3" "Gestión de servicios" \
@@ -32,8 +31,7 @@ function mainmenu() { #De este menú derivan el resto de submenús.
 }
 
 function user_mgt_menu() {
-    usermenu_option=$(
-        whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
+    usermenu_option=$(whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
         "1" "Añadir un nuevo usuario." \
         "2" "Modificar datos de un usuario." \
         "3" "Eliminar un usuario del sistema." \
@@ -43,8 +41,7 @@ function user_mgt_menu() {
 }
 
 function process_mgt_menu() {
-    processmenu_option=$(
-        whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
+    processmenu_option=$(whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
         "1" "Ver procesos activos." \
         "2" "Ver procesos que más consumen en este momento (max. 10)." \
         "3" "Detener o arrancar procesos." \
@@ -54,8 +51,7 @@ function process_mgt_menu() {
 }
 
 function services_mgt_menu() {
-    servicesmenu_option=$(
-        whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
+    servicesmenu_option=$(whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
         "1" "Información del sistema." \
         "2" "Memoria en uso y memoria disponible." \
         "3" "Tiempo que lleva el servidor en marcha." \
@@ -65,8 +61,7 @@ function services_mgt_menu() {
 }
 
 function color_change_menu() {
-    colormenuoption=$(
-        whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
+    colormenuoption=$(whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
         "1" "Rojo" ON \
         "2" "Azul" OFF \
         "3" "Verde" OFF \
