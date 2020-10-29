@@ -220,8 +220,8 @@ while :; do
         whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
         exit
         ;;
-    *)
-        whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
-        ;;
+    # *)
+    #     whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
+    #     ;;
     esac
 done
