@@ -85,6 +85,7 @@ function password_ask() {
 while :; do
 echo "Primer bucle"
     mainmenu
+    echo "Primer bucle, post-menú"
     case $mainmenu_option in
     1)
         while [[ true ]]; do
