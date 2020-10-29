@@ -176,8 +176,8 @@ while [[ true ]]; do
                 ;;
             esac
         done
-        ;;
         echo "Error en 3"
+        ;;
     4)
         while [[ true ]]; do
             color_change_menu
@@ -214,8 +214,8 @@ while [[ true ]]; do
                 ;;
             esac
         done
+        echo "Error en 4"
         ;;
-        "Error en 4"
     0)
         whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
         exit
