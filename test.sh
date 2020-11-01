@@ -1,7 +1,6 @@
 admincheck=$(
-    whiptail --title "Se requiere permiso de Administrador" --yesno
-    "Este script requiere permisos de administrador para funcionar correctamente. \n
-    ¿Eres administrador del equipo? S/N \n
+    whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
+    ¿Eres administrador del equipo? S/N \n \
     (Utiliza TAB para cambiar de opción)" 10 10
 )
 if [[ admincheck = 0 ]]; then
