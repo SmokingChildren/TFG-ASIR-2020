@@ -6,16 +6,9 @@
 #Título: Shell script con interfaz gráfica para gestión de usuarios, procesos y servicios
 #==========================================================================================
 
-# VARIABLES
-
-#==========================================================================================
-
 # FUNCIONES
 
 #Para lanzar el resultado de un comando (p. ej. "ls -l"): $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
-
-#Si el script no se ha lanzado con sudo, lo inicia ahora para poder modificar usuarios.
-#[ $UID != 0 ] && exec sudo $0 "$@"
 
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
@@ -78,6 +71,20 @@ password_ask() {
 #==========================================================================================
 
 # Inicio del script
+
+admincheck=$(
+    whiptail --title "Se requiere permiso de Administrador" --yesno
+    "Este script requiere permisos de administrador para funcionar correctamente. \n
+    ¿Eres administrador del equipo? S/N \n
+    (Utiliza TAB para cambiar de opción)" 10 10
+)
+if [[ admincheck = 0 ]]; then
+    #Si el script no se ha lanzado como sudoer, lo hace ahora.
+    [ $UID != 0 ] && exec sudo $0 "$@"
+    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 5 10
+else
+    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 5 10
+fi
 
 while :; do
     mainmenu
@@ -216,7 +223,7 @@ while :; do
         exit
         ;;
     *)
-    whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
-    ;;
+        whiptail --title "Mensaje" --msgbox "Opción no válida. Elige otra opción." 40 80
+        ;;
     esac
 done
