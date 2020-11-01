@@ -20,10 +20,10 @@ admintest() {
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
-        "1" "Gestión de usuarios (requiere permiso de administrador)" \
-        "2" "Gestión de procesos" \
-        "3" "Gestión de servicios" \
-        "4" "Cambiar colores" \
+        "1" "Gestión de usuarios." \
+        "2" "Gestión de procesos." \
+        "3" "Gestión de servicios." \
+        "4" "Cambiar esquema de colores." \
         "0" "Salir" 3>&1 1>&2 2>&3
     )
 }
@@ -41,11 +41,10 @@ user_mgt_menu() {
 
 process_mgt_menu() {
     processmenu_option=$(
-        whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 5 \
+        whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
         "1" "Ver procesos activos." \
-        "2" "Ver procesos que más consumen en este momento (max. 10)." \
-        "3" "Detener o arrancar procesos." \
-        "4" "Opcion no implementada." \
+        "2" "Ver los 10 procesos que más consumen en este momento." \
+        "3" "Detener procesos." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -63,10 +62,10 @@ services_mgt_menu() {
 
 color_change_menu() {
     colormenuoption=$(
-        whiptail --title "Cambiar colores del menú" --nocancel --menu "Elige un color" 20 78 4 \
-        "1" "Rojo" \
-        "2" "Azul" \
-        "3" "Verde" \
+        whiptail --title "Cambiar combinación de colores" --nocancel --menu "Elige un tema" 20 78 4 \
+        "1" "Drácula" \
+        "2" "Monokai" \
+        "3" "Atom" \
         "0" "Salir" 3>&1 1>&2 2>&3
     )
 }
@@ -78,7 +77,7 @@ password_ask() {
 #==========================================================================================
 
 # Inicio del script
-
+clear
 admintest
 if [ $? = 0 ]; then
     #Si el script no se ha lanzado como sudoer, lo hace ahora.
@@ -93,21 +92,20 @@ while :; do
     mainmenu
     case $mainmenu_option in
     1)
-        while [[ true ]]; do
+        while :; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1)
-                [ $UID != 0 ] && exec sudo $0 "$@"
-                nombre=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 Nombre 3>&1 1>&2 2>&3)
+                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 nombreusuario 3>&1 1>&2 2>&3)
                 password_ask
                 until [[ $password == $passwordcheck ]]; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
                     password_ask
                 done
-                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre
-                whiptail --title "Mensaje" --msgbox "Usuario $nombre registrado correctamente." 40 80
+                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
+                whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 40 80
                 #TO-DO: Condicional comprobando que no falla.
-                #Comprobar la variable $nombre si coincide con la última línea de /etc/passwd
+                #Comprobar la variable $nombre_add si coincide con la última línea de /etc/passwd
                 ;;
             2)
                 whiptail --title "Mensaje" --msgbox "Modificar datos de un usuario" 40 80
@@ -118,9 +116,12 @@ while :; do
             3)
                 whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80
                 #Pedir nombre del usuario
-                #Comprobar que existe ese usuario
+                nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
+                #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 1000)
                 #Eliminar usuario y su directorio en /home
+                userdel -r $nombre_del
                 #Mensaje de confirmación
+                whiptail --title "Mensaje" --msgbox "Usuario $nombre_del eliminado correctamente." 40 80 #TO-DO: Condicional comprobando que no falla.
                 ;;
             4)
                 whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80
@@ -133,7 +134,7 @@ while :; do
         done
         ;;
     2)
-        while [[ true ]]; do
+        while :; do
             process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
             1)
@@ -148,10 +149,6 @@ while :; do
                 whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80
                 #TO-DO: Bucle for, mostrar procesos en opciones radio, detener proceso seleccionado.
                 ;;
-            4)
-                whiptail --title "Mensaje" --msgbox "Opcion no implementada (Placeholder)." 40 80
-                #TBD.
-                ;;
             0)
                 break
                 ;;
@@ -159,7 +156,7 @@ while :; do
         done
         ;;
     3)
-        while [[ true ]]; do
+        while :; do
             services_mgt_menu #Gestión de servicios y sistema
             case $servicesmenu_option in
             1)
@@ -185,7 +182,7 @@ while :; do
         done
         ;;
     4)
-        while [[ true ]]; do
+        while :; do
             color_change_menu
             case $colormenuoption in
             1)
