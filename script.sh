@@ -10,6 +10,13 @@
 
 #Para lanzar el resultado de un comando (p. ej. "ls -l"): $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
 
+admintest() {
+    admincheck=$(
+        whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
+    ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3  #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
+    )
+}
+
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
@@ -18,7 +25,7 @@ mainmenu() { #De este menú derivan el resto de submenús.
         "3" "Gestión de servicios" \
         "4" "Cambiar colores" \
         "0" "Salir" 3>&1 1>&2 2>&3
-    ) #Esto último intercambia stdin y stderr.
+    )
 }
 
 user_mgt_menu() {
@@ -65,25 +72,21 @@ color_change_menu() {
 }
 
 password_ask() {
-    password=$(whiptail --passwordbox "Introduce contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
-    passwordcheck=$(whiptail --passwordbox "Introduce confirmación de contraseña" 8 39 --title "Password" 3>&1 1>&2 2>&3)
+    password=$(whiptail --title "Password" --passwordbox "Introduce contraseña" 8 39 3>&1 1>&2 2>&3)
+    passwordcheck=$(whiptail --title "Password" --passwordbox "Introduce confirmación de contraseña" 8 39 3>&1 1>&2 2>&3)
 }
 #==========================================================================================
 
 # Inicio del script
 
-admincheck=$(
-    whiptail --title "Se requiere permiso de Administrador" --yesno
-    "Este script requiere permisos de administrador para funcionar correctamente. \n
-    ¿Eres administrador del equipo? S/N \n
-    (Utiliza TAB para cambiar de opción)" 10 10
-)
-if [[ admincheck = 0 ]]; then
+admintest
+if [ $? = 0 ]; then
     #Si el script no se ha lanzado como sudoer, lo hace ahora.
     [ $UID != 0 ] && exec sudo $0 "$@"
-    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 5 10
+    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 10 55
 else
-    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 5 10
+    whiptail --title "Aceptado" --msgbox "No tienes permisos de administrador. Se cerrará el programa tras este aviso." 10 55
+    exit
 fi
 
 while :; do
@@ -95,7 +98,7 @@ while :; do
             case $usermenu_option in
             1)
                 [ $UID != 0 ] && exec sudo $0 "$@"
-                nombre=$(whiptail --inputbox "Introduce el nombre de usuario" 8 39 Nombre --title "Ejemplo" 3>&1 1>&2 2>&3)
+                nombre=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 Nombre 3>&1 1>&2 2>&3)
                 password_ask
                 until [[ $password == $passwordcheck ]]; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
