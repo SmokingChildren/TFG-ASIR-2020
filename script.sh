@@ -63,9 +63,9 @@ services_mgt_menu() {
 color_change_menu() {
     colormenuoption=$(
         whiptail --title "Cambiar combinación de colores" --nocancel --menu "Elige un tema" 20 78 4 \
-        "1" "Drácula" \
-        "2" "Monokai" \
-        "3" "Atom" \
+        "1" "Oscuro" \
+        "2" "Claro" \
+        "3" "Claro/Cyan" \
         "0" "Salir" 3>&1 1>&2 2>&3
     )
 }
@@ -186,29 +186,38 @@ while :; do
             color_change_menu
             case $colormenuoption in
             1)
+                #Oscuro
                 export NEWT_COLORS='
-                window=,red
-                border=white,red
-                textbox=white,red
-                button=black,white
+                root=,gray
+                window=white,black
+                title=magenta,black
+                border=white,black
+                textbox=white,black
+                button=magenta,black
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             2)
+                #Claro
                 export NEWT_COLORS='
-                window=,blue
-                border=white,blue
-                textbox=white,blue
-                button=black,white
+                root=,lightgray
+                window=black,white
+                title=black,blue
+                border=black,white
+                textbox=black,white
+                button=black,blue
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             3)
+                #Cyan
                 export NEWT_COLORS='
-                window=,green
-                border=white,green
-                textbox=white,green
-                button=black,white
+                root=,lightgray
+                window=black,cyan
+                title=black,blue
+                border=black,cyan
+                textbox=black,cyan
+                button=black,blue
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
