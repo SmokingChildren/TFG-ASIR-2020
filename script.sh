@@ -74,6 +74,10 @@ password_ask() {
     password=$(whiptail --title "Password" --passwordbox "Introduce contraseña" 8 39 3>&1 1>&2 2>&3)
     passwordcheck=$(whiptail --title "Password" --passwordbox "Introduce confirmación de contraseña" 8 39 3>&1 1>&2 2>&3)
 }
+
+name_del_check() {
+    
+}
 #==========================================================================================
 
 # Inicio del script
@@ -114,10 +118,11 @@ while :; do
                 #Mostrar menú radio con las opciones a cambiar.
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80
+                #whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
                 #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 1000)
+
                 #Eliminar usuario y su directorio en /home
                 userdel -r $nombre_del
                 #Mensaje de confirmación
