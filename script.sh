@@ -75,9 +75,8 @@ password_ask() {
     passwordcheck=$(whiptail --title "Password" --passwordbox "Introduce confirmación de contraseña" 8 39 3>&1 1>&2 2>&3)
 }
 
-name_del_check() {
-    
-}
+#name_del_check() {
+#}
 #==========================================================================================
 
 # Inicio del script
