@@ -99,7 +99,7 @@ while :; do
             case $usermenu_option in
             1)
                 nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 nombreusuario 3>&1 1>&2 2>&3)
-                if [[ $nombre_add == "" ]]; then
+                if [[ -z "$nombre_add" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario."
                     break
                 fi
