@@ -11,12 +11,13 @@ LC_ALL=es_ES.UTF-8
 
 #Para lanzar el resultado de un comando (p. ej. "ls -l"): $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
 
-admintest() {
-    admincheck=$(
-        whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
-    ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3 #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
-    )
-}
+# admintest() {
+#     admincheck=$(
+#         whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
+#     ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3 #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
+#     )
+# }
+#Función comentada por si es de utilidad más tarde, no funciona bien cuando pide contraseña de sudo (se repite).
 
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
@@ -33,9 +34,9 @@ user_mgt_menu() {
     usermenu_option=$(
         whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
         "1" "Añadir un nuevo usuario." \
-        "2" "Modificar datos de un usuario." \
+        "2" "Modificar datos de un usuario. (No implementado)" \
         "3" "Eliminar un usuario del sistema." \
-        "4" "Ver información del usuario actual." \
+        "4" "Ver información del usuario actual. (No implementado)" \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -43,9 +44,9 @@ user_mgt_menu() {
 process_mgt_menu() {
     processmenu_option=$(
         whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
-        "1" "Ver procesos activos." \
+        "1" "Ver procesos activos. (No implementado)" \
         "2" "Ver los 10 procesos que más consumen en este momento." \
-        "3" "Detener procesos." \
+        "3" "Detener procesos. (No implementado)" \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -99,17 +100,17 @@ while :; do
             case $usermenu_option in
             1)
                 nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 nombreusuario 3>&1 1>&2 2>&3)
-                if [[ -z "$nombre_add" ]]; then
+                if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
                 fi
                 password_ask
-                if [[ -z "$password" ]]; then
+                if [[ -z "$password" ]]; then #Si no has metido una contraseña, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido una contraseña." 0 0
                     break
                 fi
                 until [[ $password == $passwordcheck ]]; do
-                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
+                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 0 0
                     password_ask
                 done
                 useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
@@ -124,9 +125,12 @@ while :; do
                 #Mostrar menú radio con las opciones a cambiar.
                 ;;
             3)
-                #whiptail --title "Mensaje" --msgbox "Eliminar usuario" 40 80
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
+                if [[ -z "$nombre_del" ]]; then #Si no has metido un nombre, te saca al menú anterior.
+                    whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
+                    break
+                fi
                 #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 1000)
                 safety_check=$(getent passwd $nombre_del | cut -d: -f3)
                 if [[ $safety_check -gt 999 && $safety_check -lt 65534 ]]; then
@@ -174,19 +178,19 @@ while :; do
             case $servicesmenu_option in
             1)
                 #Información del sistema.
-                whiptail --textbox /dev/stdin 20 60 <<<"$(hostnamectl)"
+                whiptail --textbox /dev/stdin 0 0 <<<"$(hostnamectl)"
                 ;;
             2)
                 #Memoria en uso y memoria disponible
-                whiptail --textbox /dev/stdin 15 90 <<<"$(free --si -hw)"
+                whiptail --textbox /dev/stdin 0 0 <<<"$(free --si -hw)"
                 ;;
             3)
                 #Tiempo que lleva el servidor en marcha.
-                whiptail --textbox /dev/stdin 10 70 <<<"$(uptime)"
+                whiptail --textbox /dev/stdin 0 0 <<<"$(uptime)"
                 ;;
             4)
-                #Distribución de discos duros / particiones y su ocupación
-                whiptail --textbox /dev/stdin 30 90 <<<"$(parted -l)"
+                #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
+                whiptail --textbox /dev/stdin 0 0 <<<"$(parted -l)"
                 ;;
             0)
                 break
@@ -199,7 +203,7 @@ while :; do
             color_change_menu
             case $colormenuoption in
             1)
-                #Oscuro
+                #Oscuro - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,gray
                 window=white,black
@@ -211,7 +215,7 @@ while :; do
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             2)
-                #Claro
+                #Claro - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,lightgray
                 window=black,white
@@ -223,7 +227,7 @@ while :; do
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             3)
-                #Cyan
+                #Cyan - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,lightgray
                 window=black,cyan
