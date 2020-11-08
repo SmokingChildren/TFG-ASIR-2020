@@ -1,4 +1,5 @@
 #!/bin/bash
+LC_ALL=es_ES.UTF-8
 #==========================================================================================
 #Autor: Juan Carlos Collado Custodio
 #Módulo: Proyecto de Fin de Grado
@@ -128,8 +129,8 @@ while :; do
                 fi
                 ;;
             4)
-                whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80
-                #Grupos, carpetas y algo más de info (TBD).
+                whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80 #Grupos, carpetas y algo más de info (TBD).
+
                 ;;
             0)
                 break
