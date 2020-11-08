@@ -100,7 +100,7 @@ while :; do
             1)
                 nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 nombreusuario 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_add" ]]; then
-                    whiptail --title "Error" --msgbox "No has introducido un nombre de usuario."
+                    whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
                 fi
                 password_ask
