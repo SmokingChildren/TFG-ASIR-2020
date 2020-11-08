@@ -190,7 +190,7 @@ while :; do
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
-                whiptail --textbox /dev/stdin 0 0 <<<"$(parted -l)"
+                whiptail --textbox /dev/stdin 50 0 <<<"$(parted -l)"
                 ;;
             0)
                 break
