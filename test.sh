@@ -1,8 +1,10 @@
 #!/bin/bash
-read -p "Dime el nombre de un paquete para ver si está instalado: " paquete
-which $paquete >/dev/null
+which finger >/dev/null
 if [[ $? -eq 0 ]]; then
-    echo "$paquete está instalado."
+    whiptail --textbox /dev/stdin 12 0 <<<"$(finger -lp)"
+    #echo "El paquete 'finger' está instalado."
 else
-    echo "$paquete no está instalado."
+    whiptail --title "Paquete necesario" --msgbox "Se requiere la instalación del paquete 'finger' para el funcionamiento correcto de esta opción. \n \
+    Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de tu distribución de Linux." 0 0
+    #echo "El paquete 'finger' no está instalado."
 fi
