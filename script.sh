@@ -13,7 +13,7 @@
 admintest() {
     admincheck=$(
         whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
-    ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3  #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
+    ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3 #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
     )
 }
 
@@ -121,11 +121,13 @@ while :; do
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
                 #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 1000)
-
-                #Eliminar usuario y su directorio en /home
-                userdel -r $nombre_del
-                #Mensaje de confirmación
-                whiptail --title "Mensaje" --msgbox "Usuario $nombre_del eliminado correctamente." 40 80 #TO-DO: Condicional comprobando que no falla.
+                safety_check=$(getent passwd $nombre_del | cut -d: -f3)
+                if [[ $safety_check -gt 999 && $safety_check -lt 65534 ]]; then
+                    userdel -r $nombre_del
+                    whiptail --title "Correcto" --msgbox "Usuario $nombre_del eliminado correctamente." 40 80 #Mensaje de confirmación
+                else
+                    whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 40 80
+                fi
                 ;;
             4)
                 whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80
