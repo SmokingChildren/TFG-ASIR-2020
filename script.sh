@@ -81,14 +81,12 @@ password_ask() {
 
 # Inicio del script
 clear
-admintest
-if [ $? = 0 ]; then
-    #Si el script no se ha lanzado como sudoer, lo hace ahora.
-    [ $UID != 0 ] && exec sudo $0 "$@"
-    whiptail --title "Aceptado" --msgbox "Permiso de administrador aceptado. Puede continuar." 10 55
-else
-    whiptail --title "Aceptado" --msgbox "No tienes permisos de administrador. Se cerrará el programa tras este aviso." 10 55
+#admintest
+if [ $UID != 0 ]; then
+    whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo). Se cerrará el programa tras este aviso." 10 55
     exit
+else
+    whiptail --title "Bienvenido" --msgbox "Permiso de Administrador reconocido. Puede continuar." 10 55
 fi
 
 while :; do
