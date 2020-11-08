@@ -84,10 +84,10 @@ password_ask() {
 clear
 #admintest
 if [ $UID != 0 ]; then
-    whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo). Se cerrará el programa tras este aviso." 10 55
+    whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo). Se cerrará el programa tras este aviso." 0 0
     exit
 else
-    whiptail --title "Bienvenido" --msgbox "Permiso de Administrador reconocido. Puede continuar." 10 55
+    whiptail --title "Bienvenido" --msgbox "Permiso de Administrador reconocido. Puede continuar." 0 0
 fi
 
 while :; do
@@ -104,17 +104,21 @@ while :; do
                     break
                 fi
                 password_ask
+                if [[ -z "$password" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido una contraseña." 0 0
+                    break
+                fi
                 until [[ $password == $passwordcheck ]]; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 8 50
                     password_ask
                 done
                 useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
-                whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 40 80
+                whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
                 #TO-DO: Condicional comprobando que no falla.
                 #Comprobar la variable $nombre_add si coincide con la última línea de /etc/passwd
                 ;;
             2)
-                whiptail --title "Mensaje" --msgbox "Modificar datos de un usuario" 40 80
+                whiptail --title "Mensaje" --msgbox "Modificar datos de un usuario" 0 0
                 #Pedir nombre de usuario
                 #Comprobar que el usuario existe. Si no, salir al menú anterior.
                 #Mostrar menú radio con las opciones a cambiar.
@@ -127,13 +131,13 @@ while :; do
                 safety_check=$(getent passwd $nombre_del | cut -d: -f3)
                 if [[ $safety_check -gt 999 && $safety_check -lt 65534 ]]; then
                     userdel -r $nombre_del
-                    whiptail --title "Correcto" --msgbox "Usuario $nombre_del eliminado correctamente." 40 80 #Mensaje de confirmación
+                    whiptail --title "Correcto" --msgbox "Usuario $nombre_del eliminado correctamente." 0 0 #Mensaje de confirmación
                 else
-                    whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 40 80
+                    whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 0 0
                 fi
                 ;;
             4)
-                whiptail --title "Mensaje" --msgbox "Información del usuario." 40 80 #Grupos, carpetas y algo más de info (TBD).
+                whiptail --title "Mensaje" --msgbox "Información del usuario." 0 0 #Grupos, carpetas y algo más de info (TBD).
 
                 ;;
             0)
@@ -147,7 +151,7 @@ while :; do
             process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
             1)
-                whiptail --title "Mensaje" --msgbox "Procesos activos" 40 80
+                whiptail --title "Mensaje" --msgbox "Procesos activos" 0 0
                 #TO-DO: ¿Mostrar resultado de un ps o un top?
                 ;;
             2)
@@ -155,8 +159,8 @@ while :; do
                 whiptail --textbox /dev/stdin 20 40 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 40 80
-                #TO-DO: Bucle for, mostrar procesos en opciones radio, detener proceso seleccionado.
+                whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 0 0
+                #TO-DO: Bucle for, mostrar procesos en lista de opciones, detener proceso seleccionado.
                 ;;
             0)
                 break
