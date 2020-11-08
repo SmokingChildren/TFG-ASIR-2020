@@ -32,7 +32,7 @@ mainmenu() { #De este menú derivan el resto de submenús.
 
 user_mgt_menu() {
     usermenu_option=$(
-        whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 50 5 \
+        whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 75 5 \
         "1" "Añadir un nuevo usuario." \
         "2" "Modificar datos de un usuario. (No implementado)" \
         "3" "Eliminar un usuario del sistema." \
@@ -182,11 +182,11 @@ while :; do
                 ;;
             2)
                 #Memoria en uso y memoria disponible
-                whiptail --textbox /dev/stdin 0 0 <<<"$(free --si -hw)"
+                whiptail --textbox /dev/stdin 15 0 <<<"$(free --si -hw)"
                 ;;
             3)
                 #Tiempo que lleva el servidor en marcha.
-                whiptail --textbox /dev/stdin 0 0 <<<"$(uptime)"
+                whiptail --textbox /dev/stdin 15 0 <<<"$(uptime)"
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
