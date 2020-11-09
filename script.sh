@@ -146,9 +146,8 @@ while :; do
                 if [[ $? -eq 0 ]]; then
                     whiptail --textbox /dev/stdin 12 0 <<<"$(finger -lp)"
                 else
-                    whiptail --title "Paquete necesario" --msgbox "Se requiere la instalación del paquete 'finger' \
-                    para el funcionamiento correcto de esta opción. \nPuedes instalarlo con el comando '$ sudo apt install finger' \
-                    o el equivalente de tu distribución de Linux." 0 0
+                    whiptail --title "Paquete necesario" --msgbox "Se requiere la instalación del paquete 'finger' para el funcionamiento correcto de esta opción.\n\
+                    Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de tu distribución de Linux." 0 0
                 fi
                 ;;
             0)
