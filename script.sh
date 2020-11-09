@@ -72,6 +72,18 @@ color_change_menu() {
     )
 }
 
+user_info_menu() {
+    user_info_option=$(
+        whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 15 65 5 \
+        "1" "Nombre completo" \
+        "2" "Departamento" \
+        "3" "Telf. Empresa" \
+        "4" "Telf. Personal" \
+        "5" "Otros datos" \
+        "0" "Salir" 3>&1 1>&2 2>&3
+    )
+}
+
 password_ask() {
     password=$(whiptail --title "Password" --passwordbox "Introduce contraseña" 8 39 3>&1 1>&2 2>&3)
     passwordcheck=$(whiptail --title "Password" --passwordbox "Introduce confirmación de contraseña" 8 39 3>&1 1>&2 2>&3)
@@ -99,7 +111,7 @@ while :; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1)
-                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 nombreusuario 3>&1 1>&2 2>&3)
+                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
@@ -115,14 +127,97 @@ while :; do
                 done
                 useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
                 whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
-                #TO-DO: Condicional comprobando que no falla.
-                #Comprobar la variable $nombre_add si coincide con la última línea de /etc/passwd
                 ;;
             2)
-                whiptail --title "Mensaje" --msgbox "Modificar datos de un usuario" 0 0
-                #Pedir nombre de usuario
+                user_info=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3) #Pedir nombre de usuario
+                if [[ -z "$user_info" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
+                    break
+                fi
                 #Comprobar que el usuario existe. Si no, salir al menú anterior.
-                #Mostrar menú radio con las opciones a cambiar.
+                usercheck=$(getent passwd $user_info)
+                if [[ -z "$usercheck" ]]; then
+                    whiptail --title "Error" --msgbox "No se ha encontrado ese usuario." 0 0
+                    break
+                fi
+
+                user_info_menu
+                case $user_info_option in
+                1)
+                    #Cambiar nombre
+                    user_fullname=$(whiptail --title "Introduce el nombre completo" --inputbox "Introduce el nombre completo del usuario" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z "$user_fullname" ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido un nombre." 0 0
+                        break
+                    fi
+                    chfn -f "$user_fullname" $user_info
+                    if [[ $? -eq 0 ]]; then
+                        whiptail --title "Éxito" --msgbox "Dato cambiado correctamente." 0 0
+                    else
+                        whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    fi
+                    ;;
+                2)
+                    #Cambiar departamento
+                    user_room=$(whiptail --title "Introduce el departamento" --inputbox "Introduce el departamento del usuario" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z "$user_room" ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido un nombre." 0 0
+                        break
+                    fi
+                    chfn -r "$user_room" $user_info
+                    if [[ $? -eq 0 ]]; then
+                        whiptail --title "Éxito" --msgbox "Dato cambiado correctamente." 0 0
+                    else
+                        whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    fi
+                    ;;
+                3)
+                    #Cambiar telf. empresa - ¿Añadir regex?
+                    user_cnumber=$(whiptail --title "Introduce el teléfono de empresa" --inputbox "Introduce el teléfono de empresa del usuario" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z "$user_cnumber" ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido un teléfono." 0 0
+                        break
+                    fi
+                    chfn -w "$user_cnumber" $user_info
+                    if [[ $? -eq 0 ]]; then
+                        whiptail --title "Éxito" --msgbox "Dato cambiado correctamente." 0 0
+                    else
+                        whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    fi
+                    ;;
+
+                4) #Cambiar telf. personal
+                    user_pnumber=$(whiptail --title "Introduce el teléfono particular" --inputbox "Introduce el teléfono particular del usuario" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z "$user_pnumber" ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido un teléfono." 0 0
+                        break
+                    fi
+                    chfn -h "$user_pnumber" $user_info
+                    if [[ $? -eq 0 ]]; then
+                        whiptail --title "Éxito" --msgbox "Dato cambiado correctamente." 0 0
+                    else
+                        whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    fi
+                    ;;
+
+                5) #Añadir otros datos
+                    user_other=$(whiptail --title "Observaciones" --inputbox "Añade cualquier dato de interés sobre el usuario" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z "$user_other" ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido nada." 0 0
+                        break
+                    fi
+                    chfn -o "$user_other" $user_info
+                    if [[ $? -eq 0 ]]; then
+                        whiptail --title "Éxito" --msgbox "Dato cambiado correctamente." 0 0
+                    else
+                        whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    fi
+                    ;;
+
+                *)
+                    whiptail --title "Error" --msgbox "Opción inválida. Elige otra opción."
+                    ;;
+                esac
                 ;;
             3)
                 #Pedir nombre del usuario
