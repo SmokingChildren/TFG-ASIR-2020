@@ -261,7 +261,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 ;;
             2)
                 #Procesos que más consumen en este momento (max. 10)
-                whiptail --textbox /dev/stdin 20 40 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11)"
+                whiptail --textbox /dev/stdin 20 0 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
                 ;;
             3)
                 whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 0 0
@@ -287,11 +287,13 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 ;;
             3)
                 #Tiempo que lleva el servidor en marcha.
-                whiptail --textbox /dev/stdin 15 0 <<<"$(uptime)"
+                hora=$(uptime | cut -d"," -f1 | cut -d" " -f2)
+                tiempo=$(uptime | cut -d"," -f1 | cut -d" " -f4) #En minutos
+                whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo minutos." 0 0              
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
-                whiptail --textbox /dev/stdin 50 0 <<<"$(parted -l)"
+                whiptail --textbox /dev/stdin 30 0 <<<"$(parted -l)"
                 ;;
             0)
                 break
