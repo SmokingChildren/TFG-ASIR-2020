@@ -126,10 +126,17 @@ while :; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 0 0
                     password_ask
                 done
-                #whiptail --title "Añadir a grupo" --yesno "¿Desear añadir al usuario a un grupo específico?"
-                useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
-                whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
+                $group_add=$(whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0)
+                if [[ $? -eq 0 ]]; then
+                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add
+                    whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $grou_add." 0 0
+                elif [[ $? -eq 1 ]]; then
+                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
+                    whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
+                fi
+
                 ;;
+
             2)
                 user_info=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3) #Pedir nombre de usuario
                 if [[ -z "$user_info" ]]; then
