@@ -45,9 +45,9 @@ user_mgt_menu() {
 process_mgt_menu() {
     processmenu_option=$(
         whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
-        "1" "Ver procesos activos. (No implementado)" \
-        "2" "Ver los 10 procesos que más consumen en este momento." \
-        "3" "Detener procesos. (No implementado)" \
+        "1" "Ver procesos activos del sistema." \
+        "2" "Ver procesos activos del usuario." \
+        "3" "Ver los 10 procesos que más consumen en este momento." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -254,23 +254,23 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
         done
         ;;
     2)
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
-                ;;
+        whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+        ;;
     3)
         while :; do
             process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
             1)
-                whiptail --title "Mensaje" --msgbox "Procesos activos" 0 0
-                #TO-DO: ¿Mostrar resultado de un ps o un top?
+                #whiptail --title "Mensaje" --msgbox "Procesos activos" 0 0
+                whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1)"
                 ;;
             2)
-                #Procesos que más consumen en este momento (max. 10)
-                whiptail --textbox /dev/stdin 20 0 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
+                me=$(whoami)
+                whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1 -u $me)"
                 ;;
             3)
-                whiptail --title "Mensaje" --msgbox "Detener procesos (submenú)." 0 0
-                #TO-DO: Bucle for, mostrar procesos en lista de opciones, detener proceso seleccionado.
+                #Procesos que más consumen en este momento (max. 10)
+                whiptail --textbox /dev/stdin 20 0 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
                 ;;
             0)
                 break
