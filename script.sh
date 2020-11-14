@@ -23,7 +23,7 @@ mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 6 \
         "1" "Gestión de usuarios." \
-        "2" "Gestión de grupos"
+        "2" "Gestión de grupos" \
         "3" "Información de procesos." \
         "4" "Información de servicios." \
         "5" "Cambiar esquema de colores." \
