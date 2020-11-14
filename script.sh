@@ -21,11 +21,12 @@ LC_ALL=es_ES.UTF-8
 
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
-        whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 5 \
+        whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 6 \
         "1" "Gestión de usuarios." \
-        "2" "Gestión de procesos." \
-        "3" "Gestión de servicios." \
-        "4" "Cambiar esquema de colores." \
+        "2" "Gestión de grupos"
+        "3" "Información de procesos." \
+        "4" "Información de servicios." \
+        "5" "Cambiar esquema de colores." \
         "0" "Salir" 3>&1 1>&2 2>&3
     )
 }
@@ -34,16 +35,16 @@ user_mgt_menu() {
     usermenu_option=$(
         whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 75 5 \
         "1" "Añadir un nuevo usuario." \
-        "2" "Modificar datos de un usuario. (No implementado)" \
+        "2" "Modificar datos de un usuario." \
         "3" "Eliminar un usuario del sistema." \
-        "4" "Ver información del usuario actual. (No implementado)" \
+        "4" "Ver información del usuario actual." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
 
 process_mgt_menu() {
     processmenu_option=$(
-        whiptail --title "Gestión de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
+        whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
         "1" "Ver procesos activos. (No implementado)" \
         "2" "Ver los 10 procesos que más consumen en este momento." \
         "3" "Detener procesos. (No implementado)" \
@@ -53,10 +54,10 @@ process_mgt_menu() {
 
 services_mgt_menu() {
     servicesmenu_option=$(
-        whiptail --title "Gestión de servicios" --nocancel --menu "Seleccione una opción" 15 65 5 \
+        whiptail --title "Información del equipo" --nocancel --menu "Seleccione una opción" 15 65 5 \
         "1" "Información del sistema." \
         "2" "Memoria en uso y memoria disponible." \
-        "3" "Tiempo que lleva el servidor en marcha." \
+        "3" "Tiempo que lleva el equipo en marcha." \
         "4" "Capacidad disponible de discos duros / particiones." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
@@ -74,7 +75,7 @@ color_change_menu() {
 
 user_info_menu() {
     user_info_option=$(
-        whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 15 65 5 \
+        whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 15 65 6 \
         "1" "Nombre completo" \
         "2" "Departamento" \
         "3" "Telf. Empresa" \
@@ -111,7 +112,7 @@ while :; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1)
-                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3)
+                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
@@ -125,10 +126,14 @@ while :; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 0 0
                     password_ask
                 done
+                #whiptail --title "Añadir a grupo" --yesno "¿Desear añadir al usuario a un grupo específico?"
                 useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
                 whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
                 ;;
             2)
+                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                ;;
+            3)
                 user_info=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3) #Pedir nombre de usuario
                 if [[ -z "$user_info" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
@@ -219,7 +224,7 @@ while :; do
                     ;;
                 esac
                 ;;
-            3)
+            4)
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_del" ]]; then #Si no has metido un nombre, te saca al menú anterior.
@@ -235,7 +240,7 @@ while :; do
                     whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 0 0
                 fi
                 ;;
-            4)
+            5)
                 #Información del usuario.
                 which finger >/dev/null
                 if [[ $? -eq 0 ]]; then
@@ -289,7 +294,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 #Tiempo que lleva el servidor en marcha.
                 hora=$(uptime | cut -d"," -f1 | cut -d" " -f2)
                 tiempo=$(uptime | cut -d"," -f1 | cut -d" " -f4) #En minutos
-                whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo minutos." 0 0              
+                whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo minutos." 0 0
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
