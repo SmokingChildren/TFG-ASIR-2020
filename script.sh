@@ -131,9 +131,6 @@ while :; do
                 whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
                 ;;
             2)
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
-                ;;
-            3)
                 user_info=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3) #Pedir nombre de usuario
                 if [[ -z "$user_info" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
@@ -224,7 +221,7 @@ while :; do
                     ;;
                 esac
                 ;;
-            4)
+            3)
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_del" ]]; then #Si no has metido un nombre, te saca al menú anterior.
@@ -240,7 +237,7 @@ while :; do
                     whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 0 0
                 fi
                 ;;
-            5)
+            4)
                 #Información del usuario.
                 which finger >/dev/null
                 if [[ $? -eq 0 ]]; then
@@ -257,6 +254,9 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
         done
         ;;
     2)
+                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                ;;
+    3)
         while :; do
             process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
@@ -278,7 +278,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             esac
         done
         ;;
-    3)
+    4)
         while :; do
             services_mgt_menu #Gestión de servicios y sistema
             case $servicesmenu_option in
@@ -306,7 +306,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             esac
         done
         ;;
-    4)
+    5)
         while :; do
             color_change_menu
             case $colormenuoption in
