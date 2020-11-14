@@ -112,7 +112,7 @@ while :; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
             1)
-                nombre_add=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 0 0 3>&1 1>&2 2>&3)
+                nombre_add=$(whiptail --title "Introduce el nombre" --inputbox "Introduce el nombre de usuario" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
@@ -126,15 +126,16 @@ while :; do
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden. Vuelve a intentarlo." 0 0
                     password_ask
                 done
-                $group_ask=$(whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0)
+                #En caso de querer meter al usuario en un grupo, se le pregunta:
+                whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0
                 if [[ $? -eq 0 ]]; then
                     group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre del grupo" 0 0 3>&1 1>&2 2>&3)
-                    if [[ -z $group_add ]]; then
+                    if [[ -z "$group_add" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
                         break
                     fi
-                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add
-                    whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $grou_add." 0 0
+                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add #Se pasa la contraseña por openssl, si no se hace no es recuperable.
+                    whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $group_add." 0 0
                 elif [[ $? -eq 1 ]]; then
                     useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
