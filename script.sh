@@ -123,11 +123,16 @@ while :; do
                     break
                 fi
                 until [[ $password == $passwordcheck ]]; do
-                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden" 0 0
+                    whiptail --title "Error" --msgbox "Las contraseñas no coinciden. Vuelve a intentarlo." 0 0
                     password_ask
                 done
-                $group_add=$(whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0)
+                $group_ask=$(whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0)
                 if [[ $? -eq 0 ]]; then
+                    group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre del grupo" 0 0 3>&1 1>&2 2>&3)
+                    if [[ -z $group_add ]]; then
+                        whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
+                        break
+                    fi
                     useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $grou_add." 0 0
                 elif [[ $? -eq 1 ]]; then
