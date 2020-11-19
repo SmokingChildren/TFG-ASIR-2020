@@ -11,14 +11,6 @@ LC_ALL=es_ES.UTF-8
 
 #Para lanzar el resultado de un comando (p. ej. "ls -l"): $ whiptail --textbox /dev/stdin 40 80 <<<"$(ls -l)"
 
-# admintest() {
-#     admincheck=$(
-#         whiptail --title "Se requiere permiso de Administrador" --yesno "Este script requiere permisos de administrador para funcionar correctamente. \n \
-#     ¿Eres administrador del equipo? S/N" 20 60 3>&1 1>&2 2>&3 #Esto último intercambia stdin y stderr, ya que whiptail usa stderr en lugar de $?
-#     )
-# }
-#Función comentada por si es de utilidad más tarde, no funciona bien cuando pide contraseña de sudo (se repite).
-
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 6 \
@@ -57,7 +49,7 @@ process_mgt_menu() {
     processmenu_option=$(
         whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
         "1" "Ver procesos activos del sistema." \
-        "2" "Ver procesos activos del usuario." \
+        "2" "Usuarios conectados al sistema." \
         "3" "Ver los 10 procesos que más consumen en este momento." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
@@ -101,8 +93,6 @@ password_ask() {
     passwordcheck=$(whiptail --title "Password" --passwordbox "Introduce confirmación de contraseña" 8 39 3>&1 1>&2 2>&3)
 }
 
-#name_del_check() {
-#}
 #==========================================================================================
 
 # Inicio del script
@@ -145,6 +135,7 @@ while :; do
                         whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
                         break
                     fi
+
                     useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add #Se pasa la contraseña por openssl, si no se hace no es recuperable.
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $group_add." 0 0
                 elif [[ $? -eq 1 ]]; then
@@ -317,12 +308,12 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1)"
                 ;;
             2)
-                me=$(whoami)
-                whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1 -u $me)"
+                #Usuarios conectados en este momento
+                whiptail --textbox /dev/stdin 20 0 <<<"Usuarios conectados al sistema:\n$(who | column -t)"
                 ;;
             3)
                 #Procesos que más consumen en este momento (max. 10)
-                whiptail --textbox /dev/stdin 20 0 <<<"$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
+                whiptail --textbox /dev/stdin 20 0 <<<"10 procesos de mayor consumo:\n$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
                 ;;
             0)
                 break
