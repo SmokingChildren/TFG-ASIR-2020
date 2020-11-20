@@ -131,8 +131,12 @@ while :; do
                 whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0
                 if [[ $? -eq 0 ]]; then
                     group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre del grupo" 0 0 3>&1 1>&2 2>&3)
+                    group_check=$(getent group $group_add)
                     if [[ -z "$group_add" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
+                        break
+                    elif [[ -z "$group_check" ]]; then
+                        whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe en el sistema.\n Cancelando la creación de usuario..."
                         break
                     fi
 
@@ -274,15 +278,18 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             group_mgt_menu
             case $groupmenu_option in
             1)
-                #group_add=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                #Crear grupo
+                group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z $group_add ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
+                fi
                 ;;
             2)
-                #Opcion 2
+                #Modificar NOMBRE SOLO de grupo
                 whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
                 ;;
             3)
-                #Opcion 3
+                #Eliminar grupo
                 whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
                 ;;
             4)
