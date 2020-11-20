@@ -136,7 +136,7 @@ while :; do
                         whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
                         break
                     elif [[ -z "$group_check" ]]; then
-                        whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe en el sistema.\n Cancelando la creación de usuario..."
+                        whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe en el sistema.\n Cancelando la creación de usuario..." 0 0
                         break
                     fi
 
