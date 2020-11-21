@@ -286,8 +286,17 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 whiptail --title "Grupo de usuarios creado" --msgbox "Se ha generado el grupo de usuarios $group_add." 0 0
                 ;;
             2)
-                #Modificar NOMBRE SOLO de grupo
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                #Modificar nombre de grupo
+                group_edit=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_edit" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
+                    break
+                fi
+                group_edit_safetycheck=$(getent group $group_edit | cut -d: -f3)
+                if [[ $group_edit_safetycheck -gt 999 && $group_edit_safetycheck -lt 65534 || -z "$group_edit_safetycheck" ]]; then
+                    whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
+                    break
+                fi
                 ;;
             3)
                 #Eliminar grupo
