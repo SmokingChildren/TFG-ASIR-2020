@@ -308,11 +308,35 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 ;;
             3)
                 #Eliminar grupo
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                group_del=$(whiptail --title "Eliminar grupo" --inputbox "Introduce el nombre de grupo que quieres eliminar" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_del" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido un nombre de grupo.\nVolviendo al menú anterior..." 0 0
+                    break
+                fi
+                group_del_safetycheck=$(getent group $group_del | cut -d: -f3)
+                if [[ $group_del_safetycheck -lt 999 && $group_del_safetycheck -gt 65534 || -z "$group_del_safetycheck" ]]; then
+                    whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede eliminar.\nVolviendo al menú anterior..." 0 0
+                    break
+                fi
+                groupdel $group_del
+                if [[ $? -eq 0 ]]; then
+                    whiptail --title "Grupo de usuarios eliminado" --msgbox "Se ha eliminado el grupo de usuarios $group_del." 0 0
+                else
+                    whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    break
+                fi
                 ;;
             4)
-                #Opcion 4
-                whiptail --title "WIP" --msgbox "Gestión de grupos.\nMenú en construcción." 0 0
+                #Información de grupo
+                group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre del grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_info" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+                    break
+                elif [[ -z "$(getent group $group_info)" ]]; then
+                    whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+                    break
+                fi
+                whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
                 ;;
             0)
                 break

@@ -72,6 +72,7 @@ while :; do
             break
         elif [[ -z "$(getent group $group_info)" ]]; then
             whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+            break
         fi
         whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
         ;;
