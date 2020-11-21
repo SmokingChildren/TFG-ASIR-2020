@@ -24,17 +24,23 @@ while :; do
         ;;
     2)
         #Modificar nombre de grupo
-        group_edit=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)        
-        if [[ -z "$group_edit" ]]; then
+        group_oldname=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)        
+        if [[ -z "$group_oldname" ]]; then
             whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
             break
         fi
-        group_edit_safetycheck=$(getent group $group_edit | cut -d: -f3)
-        if [[ $group_edit_safetycheck -gt 999 && $group_edit_safetycheck -lt 65534 || -z "$group_edit_safetycheck" ]]; then
+        group_oldname_safetycheck=$(getent group $group_oldname | cut -d: -f3)
+        if [[ $group_oldname_safetycheck -gt 999 && $group_oldname_safetycheck -lt 65534 || -z "$group_oldname_safetycheck" ]]; then
             whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
             break
         fi
-         
+        group_newname=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
+        groupmod -n $group_newname $group_oldname
+        if [[ $? -eq 0 ]]; then
+            whiptail --title "Grupo de usuarios renombrado" --msgbox "Se ha renombrado el grupo de usuarios $group_oldname a $group_newname." 0 0
+        else
+            whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+        fi
         ;;
     3)
         #Opcion 3
