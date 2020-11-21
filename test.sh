@@ -30,8 +30,8 @@ while :; do
             break
         fi
         group_edit_safetycheck=$(getent group $group_edit | cut -d: -f3)
-        if [[ $group_edit_safetycheck -gt 999 && $group_edit_safetycheck -lt 65534 ]]; then
-            whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe.\nVolviendo al menú anterior..." 0 0
+        if [[ $group_edit_safetycheck -gt 999 && $group_edit_safetycheck -lt 65534 || -z "$group_edit_safetycheck" ]]; then
+            whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
             break
         fi
          
