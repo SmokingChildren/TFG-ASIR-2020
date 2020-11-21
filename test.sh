@@ -6,7 +6,7 @@ group_mgt_menu() {
         "1" "Añadir un nuevo grupo." \
         "2" "Modificar nombre de un grupo." \
         "3" "Eliminar un grupo del sistema." \
-        "4" "Ver información del grupo actual." \
+        "4" "Ver usuarios de un grupo concreto." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -66,10 +66,12 @@ while :; do
         ;;
     4)
         #Información de grupo
-        group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre de un grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
+        group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre del grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_info" ]]; then
             whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
             break
+        elif [[ -z "$(getent group $group_info)" ]]; then
+            whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
         fi
         whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
         ;;
