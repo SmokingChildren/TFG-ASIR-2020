@@ -280,6 +280,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 group_add=$(whiptail --title "Crear grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_add" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
+                    break
                 fi
                 groupadd "$group_add"
                 whiptail --title "Grupo de usuarios creado" --msgbox "Se ha generado el grupo de usuarios $group_add." 0 0
@@ -302,6 +303,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     whiptail --title "Grupo de usuarios renombrado" --msgbox "Se ha renombrado el grupo de usuarios $group_oldname a $group_newname." 0 0
                 else
                     whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    break
                 fi
                 ;;
             3)
