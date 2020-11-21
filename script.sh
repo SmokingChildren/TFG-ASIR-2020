@@ -130,7 +130,7 @@ while :; do
                 #En caso de querer meter al usuario en un grupo, se le pregunta:
                 whiptail --title "Añadir a grupo" --yesno "¿Deseas añadir al usuario a un grupo específico?" --yes-button "Si" 0 0
                 if [[ $? -eq 0 ]]; then
-                    group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre del grupo" 0 0 3>&1 1>&2 2>&3)
+                    group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre del grupo de usuarios." 0 0 3>&1 1>&2 2>&3)
                     group_check=$(getent group $group_add)
                     if [[ -z "$group_add" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido el nombre del grupo."
@@ -139,7 +139,6 @@ while :; do
                         whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe en el sistema.\n Cancelando la creación de usuario..." 0 0
                         break
                     fi
-
                     useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add #Se pasa la contraseña por openssl, si no se hace no es recuperable.
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $group_add." 0 0
                 elif [[ $? -eq 1 ]]; then
@@ -279,10 +278,12 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             case $groupmenu_option in
             1)
                 #Crear grupo
-                group_add=$(whiptail --title "Nombre del grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
-                if [[ -z $group_add ]]; then
+                group_add=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_add" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
                 fi
+                groupadd "$group_add"
+                whiptail --title "Grupo de usuarios creado" --msgbox "Se ha generado el grupo de usuarios $group_add." 0 0
                 ;;
             2)
                 #Modificar NOMBRE SOLO de grupo
