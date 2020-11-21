@@ -66,12 +66,12 @@ while :; do
         ;;
     4)
         #Información de grupo
-        group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre de grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
+        group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre de un grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_info" ]]; then
             whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
             break
         fi
-        whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n$(getent group $group_info)"
+        whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
         ;;
     0)
         break
