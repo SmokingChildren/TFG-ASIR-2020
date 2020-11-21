@@ -40,7 +40,7 @@ group_mgt_menu() {
         "1" "Añadir un nuevo grupo." \
         "2" "Modificar datos de un grupo." \
         "3" "Eliminar un grupo del sistema." \
-        "4" "Ver información del grupo actual." \
+        "4" "Ver usuarios de un grupo concreto." \
         "0" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -99,10 +99,10 @@ password_ask() {
 clear
 #admintest
 if [ $UID != 0 ]; then
-    whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo). Se cerrará el programa tras este aviso." 0 0
+    whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo).\nSe cerrará el programa tras este aviso." 0 0
     exit
 else
-    whiptail --title "Bienvenido" --msgbox "Permiso de Administrador reconocido. Puede continuar." 0 0
+    whiptail --title "Bienvenido" --msgbox "Permiso de Administrador reconocido.\nPuede continuar." 0 0
 fi
 
 while :; do
