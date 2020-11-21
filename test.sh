@@ -15,7 +15,7 @@ while :; do
     group_mgt_menu
     case $groupmenu_option in
     1)
-        group_add=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
+        group_add=$(whiptail --title "Crear grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_add" ]]; then
             whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
         fi
@@ -24,7 +24,7 @@ while :; do
         ;;
     2)
         #Modificar nombre de grupo
-        group_oldname=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)        
+        group_oldname=$(whiptail --title "Modificar grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_oldname" ]]; then
             whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
             break
@@ -34,7 +34,7 @@ while :; do
             whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
             break
         fi
-        group_newname=$(whiptail --title "Introduce el nombre del grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
+        group_newname=$(whiptail --title "Nuevo nombre de grupo" --inputbox "Introduce el nuevo nombre del grupo:" 0 0 3>&1 1>&2 2>&3)
         groupmod -n $group_newname $group_oldname
         if [[ $? -eq 0 ]]; then
             whiptail --title "Grupo de usuarios renombrado" --msgbox "Se ha renombrado el grupo de usuarios $group_oldname a $group_newname." 0 0
