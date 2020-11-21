@@ -385,8 +385,8 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             3)
                 #Tiempo que lleva el servidor en marcha.
                 hora=$(uptime | cut -d"," -f1 | cut -d" " -f2)
-                tiempo=$(uptime | cut -d"," -f1 | cut -d" " -f4) #En minutos
-                whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo minutos." 0 0
+                tiempo=$(uptime -p | cut -c4-100) #En minutos
+                whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo." 0 0
                 ;;
             4)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
