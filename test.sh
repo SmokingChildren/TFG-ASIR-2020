@@ -30,7 +30,7 @@ while :; do
             break
         fi
         group_oldname_safetycheck=$(getent group $group_oldname | cut -d: -f3)
-        if [[ $group_oldname_safetycheck -gt 999 && $group_oldname_safetycheck -lt 65534 || -z "$group_oldname_safetycheck" ]]; then
+        if [[ $group_oldname_safetycheck -lt 999 && $group_oldname_safetycheck -gt 65534 || -z "$group_oldname_safetycheck" ]]; then
             whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
             break
         fi
