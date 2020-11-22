@@ -29,7 +29,7 @@ user_mgt_menu() {
         "A" "Añadir un nuevo usuario." \
         "B" "Modificar datos de un usuario." \
         "C" "Eliminar un usuario del sistema." \
-        "D" "Ver información del usuario actual." \
+        "D" "Ver información de los usuarios conectados." \
         "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -49,7 +49,7 @@ process_mgt_menu() {
     processmenu_option=$(
         whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 0 0 4 \
         "A" "Ver procesos activos del sistema." \
-        "B" "Usuarios conectados al sistema." \
+        "B" "Buscar texto en la lista de procesos." \
         "C" "Ver los 10 procesos que más consumen en este momento." \
         "X" "Volver" 3>&1 1>&2 2>&3
     )
@@ -354,11 +354,12 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             case $processmenu_option in
             A)
                 #whiptail --title "Mensaje" --msgbox "Procesos activos" 0 0
-                whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1)"
+                whiptail --textbox /dev/stdin 20 0 <<<"$(ps aux)"
                 ;;
             B)
-                #Usuarios conectados en este momento
-                whiptail --textbox /dev/stdin 20 0 <<<"Usuarios conectados al sistema:\n$(who | column -t)"
+                #Buscar cadena de texto en lista de procesos
+                process_search=$(whiptail --title "Introduce texto" --inputbox "Introduce el texto a buscar en la lista de procesos:" 0 0 3>&1 1>&2 2>&3)
+                whiptail --textbox /dev/stdin 20 0 <<<"Procesos encontrados:\n\n$(ps aux | grep $process_search)"
                 ;;
             C)
                 #Procesos que más consumen en este momento (max. 1X)
