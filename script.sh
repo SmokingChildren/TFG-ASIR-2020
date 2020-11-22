@@ -13,7 +13,7 @@ LC_ALL=es_ES.UTF-8
 
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
-        whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 6 \
+        whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 0 0 6 \
         "A" "Gestión de usuarios." \
         "B" "Gestión de grupos" \
         "C" "Información de procesos." \
@@ -25,7 +25,7 @@ mainmenu() { #De este menú derivan el resto de submenús.
 
 user_mgt_menu() {
     usermenu_option=$(
-        whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 75 5 \
+        whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 0 0 5 \
         "A" "Añadir un nuevo usuario." \
         "B" "Modificar datos de un usuario." \
         "C" "Eliminar un usuario del sistema." \
@@ -36,7 +36,7 @@ user_mgt_menu() {
 
 group_mgt_menu() {
     groupmenu_option=$(
-        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 15 75 5 \
+        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 0 0 5 \
         "A" "Añadir un nuevo grupo." \
         "B" "Modificar datos de un grupo." \
         "C" "Eliminar un grupo del sistema." \
@@ -47,7 +47,7 @@ group_mgt_menu() {
 
 process_mgt_menu() {
     processmenu_option=$(
-        whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
+        whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 0 0 4 \
         "A" "Ver procesos activos del sistema." \
         "B" "Usuarios conectados al sistema." \
         "C" "Ver los 10 procesos que más consumen en este momento." \
@@ -57,7 +57,7 @@ process_mgt_menu() {
 
 services_mgt_menu() {
     servicesmenu_option=$(
-        whiptail --title "Información del equipo" --nocancel --menu "Seleccione una opción" 15 65 5 \
+        whiptail --title "Información del equipo" --nocancel --menu "Seleccione una opción" 0 0 5 \
         "A" "Información del sistema." \
         "B" "Memoria en uso y memoria disponible." \
         "C" "Tiempo que lleva el equipo en marcha." \
@@ -68,7 +68,7 @@ services_mgt_menu() {
 
 color_change_menu() {
     colormenuoption=$(
-        whiptail --title "Cambiar combinación de colores" --nocancel --menu "Elige un tema" 20 78 4 \
+        whiptail --title "Cambiar combinación de colores" --nocancel --menu "Elige un tema" 0 0 4 \
         "A" "Oscuro" \
         "B" "Claro" \
         "C" "Claro/Cyan" \
@@ -78,7 +78,7 @@ color_change_menu() {
 
 user_info_menu() {
     user_info_option=$(
-        whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 15 65 6 \
+        whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 0 0 6 \
         "A" "Nombre completo" \
         "B" "Departamento" \
         "C" "Telf. Empresa" \
