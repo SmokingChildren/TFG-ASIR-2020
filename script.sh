@@ -14,77 +14,77 @@ LC_ALL=es_ES.UTF-8
 mainmenu() { #De este menú derivan el resto de submenús.
     mainmenu_option=$(
         whiptail --title "Administración del Sistema" --nocancel --menu "Elige una opción" 25 60 6 \
-        "1" "Gestión de usuarios." \
-        "2" "Gestión de grupos" \
-        "3" "Información de procesos." \
-        "4" "Información de servicios." \
-        "5" "Cambiar esquema de colores." \
-        "0" "Salir" 3>&1 1>&2 2>&3
+        "A" "Gestión de usuarios." \
+        "B" "Gestión de grupos" \
+        "C" "Información de procesos." \
+        "D" "Información de servicios." \
+        "E" "Cambiar esquema de colores." \
+        "X" "Salir" 3>&1 1>&2 2>&3
     )
 }
 
 user_mgt_menu() {
     usermenu_option=$(
         whiptail --title "Gestión de usuarios" --nocancel --menu "Seleccione una opción" 15 75 5 \
-        "1" "Añadir un nuevo usuario." \
-        "2" "Modificar datos de un usuario." \
-        "3" "Eliminar un usuario del sistema." \
-        "4" "Ver información del usuario actual." \
-        "0" "Volver" 3>&1 1>&2 2>&3
+        "A" "Añadir un nuevo usuario." \
+        "B" "Modificar datos de un usuario." \
+        "C" "Eliminar un usuario del sistema." \
+        "D" "Ver información del usuario actual." \
+        "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
 
 group_mgt_menu() {
     groupmenu_option=$(
         whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 15 75 5 \
-        "1" "Añadir un nuevo grupo." \
-        "2" "Modificar datos de un grupo." \
-        "3" "Eliminar un grupo del sistema." \
-        "4" "Ver usuarios de un grupo concreto." \
-        "0" "Volver" 3>&1 1>&2 2>&3
+        "A" "Añadir un nuevo grupo." \
+        "B" "Modificar datos de un grupo." \
+        "C" "Eliminar un grupo del sistema." \
+        "D" "Ver usuarios de un grupo concreto." \
+        "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
 
 process_mgt_menu() {
     processmenu_option=$(
         whiptail --title "Información de procesos" --nocancel --menu "Seleccione una opción" 15 65 4 \
-        "1" "Ver procesos activos del sistema." \
-        "2" "Usuarios conectados al sistema." \
-        "3" "Ver los 10 procesos que más consumen en este momento." \
-        "0" "Volver" 3>&1 1>&2 2>&3
+        "A" "Ver procesos activos del sistema." \
+        "B" "Usuarios conectados al sistema." \
+        "C" "Ver los 10 procesos que más consumen en este momento." \
+        "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
 
 services_mgt_menu() {
     servicesmenu_option=$(
         whiptail --title "Información del equipo" --nocancel --menu "Seleccione una opción" 15 65 5 \
-        "1" "Información del sistema." \
-        "2" "Memoria en uso y memoria disponible." \
-        "3" "Tiempo que lleva el equipo en marcha." \
-        "4" "Capacidad disponible de discos duros / particiones." \
-        "0" "Volver" 3>&1 1>&2 2>&3
+        "A" "Información del sistema." \
+        "B" "Memoria en uso y memoria disponible." \
+        "C" "Tiempo que lleva el equipo en marcha." \
+        "D" "Capacidad disponible de discos duros / particiones." \
+        "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
 
 color_change_menu() {
     colormenuoption=$(
         whiptail --title "Cambiar combinación de colores" --nocancel --menu "Elige un tema" 20 78 4 \
-        "1" "Oscuro" \
-        "2" "Claro" \
-        "3" "Claro/Cyan" \
-        "0" "Salir" 3>&1 1>&2 2>&3
+        "A" "Oscuro" \
+        "B" "Claro" \
+        "C" "Claro/Cyan" \
+        "X" "Salir" 3>&1 1>&2 2>&3
     )
 }
 
 user_info_menu() {
     user_info_option=$(
         whiptail --title "Modificar información del usuario" --nocancel --menu "Elige el dato que deseas modificar" 15 65 6 \
-        "1" "Nombre completo" \
-        "2" "Departamento" \
-        "3" "Telf. Empresa" \
-        "4" "Telf. Personal" \
-        "5" "Otros datos" \
-        "0" "Salir" 3>&1 1>&2 2>&3
+        "A" "Nombre completo" \
+        "B" "Departamento" \
+        "C" "Telf. Empresa" \
+        "D" "Telf. Personal" \
+        "E" "Otros datos" \
+        "X" "Salir" 3>&1 1>&2 2>&3
     )
 }
 
@@ -108,11 +108,11 @@ fi
 while :; do
     mainmenu
     case $mainmenu_option in
-    1)
+    A)
         while :; do
             user_mgt_menu #Gestión de usuarios. Ver funciones.
             case $usermenu_option in
-            1)
+            A)
                 nombre_add=$(whiptail --title "Introduce el nombre" --inputbox "Introduce el nombre de usuario" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
@@ -148,7 +148,7 @@ while :; do
 
                 ;;
 
-            2)
+            B)
                 user_info=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario" 8 39 3>&1 1>&2 2>&3) #Pedir nombre de usuario
                 if [[ -z "$user_info" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
@@ -163,7 +163,7 @@ while :; do
 
                 user_info_menu
                 case $user_info_option in
-                1)
+                A)
                     #Cambiar nombre
                     user_fullname=$(whiptail --title "Introduce el nombre completo" --inputbox "Introduce el nombre completo del usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_fullname" ]]; then
@@ -177,7 +177,7 @@ while :; do
                         whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
                     fi
                     ;;
-                2)
+                B)
                     #Cambiar departamento
                     user_room=$(whiptail --title "Introduce el departamento" --inputbox "Introduce el departamento del usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_room" ]]; then
@@ -191,7 +191,7 @@ while :; do
                         whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
                     fi
                     ;;
-                3)
+                C)
                     #Cambiar telf. empresa - ¿Añadir regex?
                     user_cnumber=$(whiptail --title "Introduce el teléfono de empresa" --inputbox "Introduce el teléfono de empresa del usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_cnumber" ]]; then
@@ -206,7 +206,7 @@ while :; do
                     fi
                     ;;
 
-                4) #Cambiar telf. personal
+                D) #Cambiar telf. personal
                     user_pnumber=$(whiptail --title "Introduce el teléfono particular" --inputbox "Introduce el teléfono particular del usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_pnumber" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido un teléfono." 0 0
@@ -220,7 +220,7 @@ while :; do
                     fi
                     ;;
 
-                5) #Añadir otros datos
+                E) #Añadir otros datos
                     user_other=$(whiptail --title "Observaciones" --inputbox "Añade cualquier dato de interés sobre el usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_other" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido nada." 0 0
@@ -239,14 +239,14 @@ while :; do
                     ;;
                 esac
                 ;;
-            3)
+            C)
                 #Pedir nombre del usuario
                 nombre_del=$(whiptail --title "Ejemplo" --inputbox "Introduce el nombre de usuario a eliminar" 8 50 nombreusuario 3>&1 1>&2 2>&3)
                 if [[ -z "$nombre_del" ]]; then #Si no has metido un nombre, te saca al menú anterior.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
                 fi
-                #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 1000)
+                #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 100X)
                 safety_check=$(getent passwd $nombre_del | cut -d: -f3)
                 if [[ $safety_check -gt 999 && $safety_check -lt 65534 ]]; then
                     userdel -r $nombre_del
@@ -255,7 +255,7 @@ while :; do
                     whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 0 0
                 fi
                 ;;
-            4)
+            D)
                 #Información del usuario.
                 which finger >/dev/null
                 if [[ $? -eq 0 ]]; then
@@ -265,18 +265,18 @@ while :; do
 Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de tu distribución de Linux." 0 0
                 fi
                 ;;
-            0)
+            X)
                 break
                 ;;
             esac
         done
         ;;
-    2)
+    B)
         #Menú de creación de grupos
         while :; do
             group_mgt_menu
             case $groupmenu_option in
-            1)
+            A)
                 group_add=$(whiptail --title "Crear grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_add" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
@@ -285,7 +285,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 groupadd "$group_add"
                 whiptail --title "Grupo de usuarios creado" --msgbox "Se ha generado el grupo de usuarios $group_add." 0 0
                 ;;
-            2)
+            B)
                 #Modificar nombre de grupo
                 group_oldname=$(whiptail --title "Modificar grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_oldname" ]]; then
@@ -306,7 +306,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     break
                 fi
                 ;;
-            3)
+            C)
                 #Eliminar grupo
                 group_del=$(whiptail --title "Eliminar grupo" --inputbox "Introduce el nombre de grupo que quieres eliminar" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_del" ]]; then
@@ -326,7 +326,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     break
                 fi
                 ;;
-            4)
+            D)
                 #Información de grupo
                 group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre del grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_info" ]]; then
@@ -338,7 +338,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 fi
                 whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
                 ;;
-            0)
+            X)
                 break
                 ;;
             *)
@@ -348,61 +348,61 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
 
         done
         ;;
-    3)
+    C)
         while :; do
             process_mgt_menu #Gestión de procesos. Ver funciones.
             case $processmenu_option in
-            1)
+            A)
                 #whiptail --title "Mensaje" --msgbox "Procesos activos" 0 0
                 whiptail --textbox /dev/stdin 20 0 <<<"$(top -b -n 1)"
                 ;;
-            2)
+            B)
                 #Usuarios conectados en este momento
                 whiptail --textbox /dev/stdin 20 0 <<<"Usuarios conectados al sistema:\n$(who | column -t)"
                 ;;
-            3)
-                #Procesos que más consumen en este momento (max. 10)
+            C)
+                #Procesos que más consumen en este momento (max. 1X)
                 whiptail --textbox /dev/stdin 20 0 <<<"10 procesos de mayor consumo:\n$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
                 ;;
-            0)
+            X)
                 break
                 ;;
             esac
         done
         ;;
-    4)
+    D)
         while :; do
             services_mgt_menu #Gestión de servicios y sistema
             case $servicesmenu_option in
-            1)
+            A)
                 #Información del sistema.
                 whiptail --textbox /dev/stdin 0 0 <<<"$(hostnamectl)"
                 ;;
-            2)
+            B)
                 #Memoria en uso y memoria disponible
                 whiptail --textbox /dev/stdin 15 0 <<<"$(free --si -hw)"
                 ;;
-            3)
+            C)
                 #Tiempo que lleva el servidor en marcha.
                 hora=$(uptime | cut -d"," -f1 | cut -d" " -f2)
                 tiempo=$(uptime -p | cut -c4-100) #En minutos
                 whiptail --title "Tiempo activo" --msgbox "Son las $hora.\nEl equipo lleva encendido $tiempo." 0 0
                 ;;
-            4)
+            D)
                 #Distribución de discos duros / particiones y su ocupación. Requiere permiso sudo.
                 whiptail --textbox /dev/stdin 30 0 <<<"$(parted -l)"
                 ;;
-            0)
+            X)
                 break
                 ;;
             esac
         done
         ;;
-    5)
+    E)
         while :; do
             color_change_menu
             case $colormenuoption in
-            1)
+            A)
                 #Oscuro - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,gray
@@ -414,7 +414,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
-            2)
+            B)
                 #Claro - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,lightgray
@@ -426,7 +426,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
-            3)
+            C)
                 #Cyan - Falta añadir más parámetros, esto son de prueba
                 export NEWT_COLORS='
                 root=,lightgray
@@ -438,13 +438,13 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
-            0)
+            X)
                 break
                 ;;
             esac
         done
         ;;
-    0)
+    X)
         whiptail --title "Mensaje" --msgbox "Gracias por utilizar este servicio." 10 70
         exit
         ;;
