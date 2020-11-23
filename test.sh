@@ -2,19 +2,21 @@
 
 group_mgt_menu() {
     groupmenu_option=$(
-        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 15 75 5 \
-        "1" "Añadir un nuevo grupo." \
-        "2" "Modificar nombre de un grupo." \
-        "3" "Eliminar un grupo del sistema." \
-        "4" "Ver usuarios de un grupo concreto." \
-        "0" "Volver" 3>&1 1>&2 2>&3
+        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 0 0 7 \
+        "A" "Añadir un nuevo grupo." \
+        "B" "Modificar datos de un grupo." \
+        "C" "Eliminar un grupo del sistema." \
+        "D" "Ver usuarios de un grupo concreto." \
+        "E" "Meter usuario en un grupo." \
+        "F" "Sacar usuario de un grupo." \
+        "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
 #Menú de creación de grupos
 while :; do
     group_mgt_menu
     case $groupmenu_option in
-    1)
+    A)
         group_add=$(whiptail --title "Crear grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_add" ]]; then
             whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
@@ -23,7 +25,7 @@ while :; do
         groupadd "$group_add"
         whiptail --title "Grupo de usuarios creado" --msgbox "Se ha generado el grupo de usuarios $group_add." 0 0
         ;;
-    2)
+    B)
         #Modificar nombre de grupo
         group_oldname=$(whiptail --title "Modificar grupo" --inputbox "Introduce el nombre de grupo que quieres modificar:" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_oldname" ]]; then
@@ -44,7 +46,7 @@ while :; do
             break
         fi
         ;;
-    3)
+    C)
         #Eliminar grupo
         group_del=$(whiptail --title "Eliminar grupo" --inputbox "Introduce el nombre de grupo que quieres eliminar" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_del" ]]; then
@@ -64,7 +66,7 @@ while :; do
             break
         fi
         ;;
-    4)
+    D)
         #Información de grupo
         group_info=$(whiptail --title "Información de grupo" --inputbox "Introduce el nombre del grupo que quieres consultar:" 0 0 3>&1 1>&2 2>&3)
         if [[ -z "$group_info" ]]; then
@@ -76,7 +78,57 @@ while :; do
         fi
         whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
         ;;
-    0)
+    E)
+        user_join=$(whiptail --title "Añadir usuario a grupo" --inputbox "Introduce el nombre del usuario a añadir:" 0 0 3>&1 1>&2 2>&3)
+        if [[ -z "$user_join" ]]; then
+            whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+            break
+        elif [[ -z "$(getent passwd $user_join)" ]]; then
+            whiptail --title "Error" --msgbox "Ese usuario no existe. Volviendo al menú anterior..." 0 0
+            break
+        fi
+        group_join=$(whiptail --title "Añadir usuario a grupo" --inputbox "Introduce el nombre del grupo donde añadir al usuario:" 0 0 3>&1 1>&2 2>&3)
+        if [[ -z "$group_join" ]]; then
+            whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+            break
+        elif [[ -z "$(getent group $group_join)" ]]; then
+            whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+            break
+        fi
+        usermod -a -G $group_join $user_join
+        if [[ $? -eq 0 ]]; then
+            whiptail --title "Usuario añadido a grupo" --msgbox "Usuario $user_join añadido al grupo $group_join correctamente." 0 0
+        else
+            whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+            break
+        fi        
+        ;;
+    F)
+        user_remove=$(whiptail --title "Retirar usuario de grupo" --inputbox "Introduce el nombre del usuario a retirar:" 0 0 3>&1 1>&2 2>&3)
+        if [[ -z "$user_remove" ]]; then
+            whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+            break
+        elif [[ -z "$(getent passwd $user_remove)" ]]; then
+            whiptail --title "Error" --msgbox "Ese usuario no existe. Volviendo al menú anterior..." 0 0
+            break
+        fi
+        group_remove=$(whiptail --title "Retirar usuario de grupo" --inputbox "Introduce el nombre del grupo de donde retirar al usuario:" 0 0 3>&1 1>&2 2>&3)
+        if [[ -z "$group_remove" ]]; then
+            whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+            break
+        elif [[ -z "$(getent group $group_remove)" ]]; then
+            whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+            break
+        fi
+        gpasswd -d $user_remove $group_remove        
+        if [[ $? -eq 0 ]]; then
+            whiptail --title "Usuario añadido a grupo" --msgbox "Usuario $user_remove retirado del grupo $group_remove correctamente." 0 0
+        else
+            whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+            break
+        fi 
+        ;;
+    X)
         break
         ;;
     *)

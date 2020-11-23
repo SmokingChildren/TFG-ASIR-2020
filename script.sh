@@ -36,11 +36,13 @@ user_mgt_menu() {
 
 group_mgt_menu() {
     groupmenu_option=$(
-        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 0 0 5 \
+        whiptail --title "Gestión de grupos" --nocancel --menu "Seleccione una opción" 0 0 7 \
         "A" "Añadir un nuevo grupo." \
         "B" "Modificar datos de un grupo." \
         "C" "Eliminar un grupo del sistema." \
         "D" "Ver usuarios de un grupo concreto." \
+        "E" "Meter usuario en un grupo." \
+        "F" "Sacar usuario de un grupo." \
         "X" "Volver" 3>&1 1>&2 2>&3
     )
 }
@@ -279,7 +281,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             A)
                 group_add=$(whiptail --title "Crear grupo" --inputbox "Introduce el nombre de grupo" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$group_add" ]]; then
-                    whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo." 0 0
+                    whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
                     break
                 fi
                 groupadd "$group_add"
@@ -337,6 +339,56 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     break
                 fi
                 whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
+                ;;
+            E)
+                user_join=$(whiptail --title "Añadir usuario a grupo" --inputbox "Introduce el nombre del usuario a añadir:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$user_join" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+                    break
+                elif [[ -z "$(getent passwd $user_join)" ]]; then
+                    whiptail --title "Error" --msgbox "Ese usuario no existe. Volviendo al menú anterior..." 0 0
+                    break
+                fi
+                group_join=$(whiptail --title "Añadir usuario a grupo" --inputbox "Introduce el nombre del grupo donde añadir al usuario:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_join" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+                    break
+                elif [[ -z "$(getent group $group_join)" ]]; then
+                    whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+                    break
+                fi
+                usermod -a -G $group_join $user_join
+                if [[ $? -eq 0 ]]; then
+                    whiptail --title "Usuario añadido a grupo" --msgbox "Usuario $user_join añadido al grupo $group_join correctamente." 0 0
+                else
+                    whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    break
+                fi
+                ;;
+            F)
+                user_remove=$(whiptail --title "Retirar usuario de grupo" --inputbox "Introduce el nombre del usuario a retirar:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$user_remove" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+                    break
+                elif [[ -z "$(getent passwd $user_remove)" ]]; then
+                    whiptail --title "Error" --msgbox "Ese usuario no existe. Volviendo al menú anterior..." 0 0
+                    break
+                fi
+                group_remove=$(whiptail --title "Retirar usuario de grupo" --inputbox "Introduce el nombre del grupo de donde retirar al usuario:" 0 0 3>&1 1>&2 2>&3)
+                if [[ -z "$group_remove" ]]; then
+                    whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
+                    break
+                elif [[ -z "$(getent group $group_remove)" ]]; then
+                    whiptail --title "Error" --msgbox "Ese grupo no existe. Volviendo al menú anterior..." 0 0
+                    break
+                fi
+                gpasswd -d $user_remove $group_remove
+                if [[ $? -eq 0 ]]; then
+                    whiptail --title "Usuario añadido a grupo" --msgbox "Usuario $user_remove retirado del grupo $group_remove correctamente." 0 0
+                else
+                    whiptail --title "Error" --msgbox "Se ha producido un error." 0 0
+                    break
+                fi
                 ;;
             X)
                 break
