@@ -317,7 +317,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     break
                 fi
                 group_del_safetycheck=$(getent group $group_del | cut -d: -f3)
-                if [[ $group_del_safetycheck -lt 999 && $group_del_safetycheck -gt 65534 || -z "$group_del_safetycheck" ]]; then
+                if [[ $group_del_safetycheck -lt 999 || $group_del_safetycheck -gt 65534 || -z "$group_del_safetycheck" ]]; then
                     whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede eliminar.\nVolviendo al menú anterior..." 0 0
                     break
                 fi
