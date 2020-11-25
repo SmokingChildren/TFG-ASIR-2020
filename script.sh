@@ -5,6 +5,7 @@ LC_ALL=es_ES.UTF-8
 #Módulo: Proyecto de Fin de Grado
 #Curso: ASIR 2019-2020
 #Título: Shell script con interfaz gráfica para gestión de usuarios, procesos y servicios
+#Instituto: IES Virgen de la Paz (Alcobendas)
 #==========================================================================================
 
 # FUNCIONES
@@ -17,7 +18,7 @@ mainmenu() { #De este menú derivan el resto de submenús.
         "A" "Gestión de usuarios." \
         "B" "Gestión de grupos" \
         "C" "Información de procesos." \
-        "D" "Información de servicios." \
+        "D" "Información del sistema." \
         "E" "Cambiar esquema de colores." \
         "X" "Salir" 3>&1 1>&2 2>&3
     )
@@ -57,9 +58,9 @@ process_mgt_menu() {
     )
 }
 
-services_mgt_menu() {
-    servicesmenu_option=$(
-        whiptail --title "Información del equipo" --nocancel --menu "Seleccione una opción" 0 0 5 \
+system_info_menu() {
+    systeminfo_option=$(
+        whiptail --title "Información del sistema" --nocancel --menu "Seleccione una opción" 0 0 5 \
         "A" "Información del sistema." \
         "B" "Memoria en uso y memoria disponible." \
         "C" "Tiempo que lleva el equipo en marcha." \
@@ -425,8 +426,8 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
         ;;
     D)
         while :; do
-            services_mgt_menu #Gestión de servicios y sistema
-            case $servicesmenu_option in
+            system_info_menu #Gestión de servicios y sistema
+            case $systeminfo_option in
             A)
                 #Información del sistema.
                 whiptail --textbox /dev/stdin 0 0 <<<"$(hostnamectl)"
