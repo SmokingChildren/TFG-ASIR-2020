@@ -100,7 +100,7 @@ password_ask() {
 
 # Inicio del script
 clear
-#admintest
+
 if [ $UID != 0 ]; then
     whiptail --title "Error" --msgbox "Este script se debe lanzar como Administrador (sudo).\nSe cerrará el programa tras este aviso." 0 0
     exit
@@ -113,20 +113,22 @@ while :; do
     case $mainmenu_option in
     A)
         while :; do
-            user_mgt_menu #Gestión de usuarios. Ver funciones.
+            user_mgt_menu #Gestión de usuarios. Ver funciones al principio del script.
             case $usermenu_option in
             A)
                 nombre_add=$(whiptail --title "Introduce el nombre" --inputbox "Introduce el nombre de usuario" 0 0 3>&1 1>&2 2>&3)
-                if [[ -z "$nombre_add" ]]; then #Si no has metido un nombre, te saca al menú anterior.
+                if [[ -z "$nombre_add" ]]; then
+                    #Si el campo está en blanco, sale un aviso y vuelve al menú anterior.
+                    #Este proceso se repite a lo largo de todo el script en diferentes puntos.
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
                 fi
                 password_ask
-                if [[ -z "$password" ]]; then #Si no has metido una contraseña, te saca al menú anterior.
+                if [[ -z "$password" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido una contraseña." 0 0
                     break
                 fi
-                until [[ $password == $passwordcheck ]]; do
+                until [[ $password == $passwordcheck ]]; do #Comprueba que el usuario ha puesto correctamente la contraseña. Ver funciones.
                     whiptail --title "Error" --msgbox "Las contraseñas no coinciden. Vuelve a intentarlo." 0 0
                     password_ask
                 done
@@ -142,13 +144,14 @@ while :; do
                         whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe en el sistema.\n Cancelando la creación de usuario..." 0 0
                         break
                     fi
-                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add #Se pasa la contraseña por openssl, si no se hace no es recuperable.
+                    useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add -G $group_add
+                    #La contraseña se encripta automáticamente en el sistema. Si no se pasa por openssl primero, la variable $password se guarda encriptada en lugar de ser
+                    #la password del usuario, por lo que no se podría utilizar. Habría que hacer un "$passwd usuario" y resetearla.
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente y añadido al grupo $group_add." 0 0
                 elif [[ $? -eq 1 ]]; then
                     useradd -m -p $(echo $password | openssl passwd -1 -stdin) $nombre_add
                     whiptail --title "Mensaje" --msgbox "Usuario $nombre_add registrado correctamente." 0 0
                 fi
-
                 ;;
 
             B)
@@ -457,7 +460,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             color_change_menu
             case $colormenuoption in
             A)
-                #Oscuro - Falta añadir más parámetros, esto son de prueba
+                #Oscuro
                 export NEWT_COLORS='
                 root=,gray
                 window=white,black
@@ -465,11 +468,13 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 border=white,black
                 textbox=white,black
                 button=magenta,black
+                actbutton=black,magenta
+                listbox=white,black
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             B)
-                #Claro - Falta añadir más parámetros, esto son de prueba
+                #Claro
                 export NEWT_COLORS='
                 root=,lightgray
                 window=black,white
@@ -477,11 +482,13 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 border=black,white
                 textbox=black,white
                 button=black,blue
+                actbutton=blue,black
+                listbox=black,white
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
             C)
-                #Cyan - Falta añadir más parámetros, esto son de prueba
+                #Cyan
                 export NEWT_COLORS='
                 root=,lightgray
                 window=black,cyan
@@ -489,6 +496,8 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 border=black,cyan
                 textbox=black,cyan
                 button=black,blue
+                actbutton=cyan,black
+                listbox=black,cyan
                 '
                 whiptail --msgbox "Muestra de colores" 0 0
                 ;;
