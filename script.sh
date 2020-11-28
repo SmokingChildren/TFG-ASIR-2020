@@ -198,7 +198,7 @@ while :; do
                     fi
                     ;;
                 C)
-                    #Cambiar telf. empresa - ¿Añadir regex?
+                    #Cambiar telf. empresa
                     user_cnumber=$(whiptail --title "Introduce el teléfono de empresa" --inputbox "Introduce el teléfono de empresa del usuario" 0 0 3>&1 1>&2 2>&3)
                     if [[ -z "$user_cnumber" ]]; then
                         whiptail --title "Error" --msgbox "No has introducido un teléfono." 0 0
@@ -252,17 +252,17 @@ while :; do
                     whiptail --title "Error" --msgbox "No has introducido un nombre de usuario." 0 0
                     break
                 fi
-                #Comprobar que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 100X)
+                #Comprueba que existe ese usuario y que no es del sistema (ver en /etc/passwd que es superior a 100X)
                 safety_check=$(getent passwd $nombre_del | cut -d: -f3)
                 if [[ $safety_check -gt 999 && $safety_check -lt 65534 ]]; then
                     userdel -r $nombre_del
-                    whiptail --title "Correcto" --msgbox "Usuario $nombre_del eliminado correctamente." 0 0 #Mensaje de confirmación
+                    whiptail --title "Correcto" --msgbox "Usuario $nombre_del eliminado correctamente." 0 0
                 else
                     whiptail --title "Error" --msgbox "Error: ese usuario no existe o no se puede eliminar." 0 0
                 fi
                 ;;
             D)
-                #Información del usuario.
+                #Información del usuario. Comprueba primero que tiene instalado el paquete finger.
                 which finger >/dev/null
                 if [[ $? -eq 0 ]]; then
                     whiptail --textbox /dev/stdin 12 0 <<<"$(finger -lp)"
@@ -298,8 +298,9 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     whiptail --title "Error" --msgbox "No has introducido un nombre para el grupo.\nVolviendo al menú anterior..." 0 0
                     break
                 fi
+                #Antes de modificar el grupo, comprueba que existe y no es del sistema.
                 group_oldname_safetycheck=$(getent group $group_oldname | cut -d: -f3)
-                if [[ $group_oldname_safetycheck -lt 999 && $group_oldname_safetycheck -gt 65534 || -z "$group_oldname_safetycheck" ]]; then
+                if [[ $group_oldname_safetycheck -lt 999 || $group_oldname_safetycheck -gt 65534 || -z "$group_oldname_safetycheck" ]]; then
                     whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede modificar.\nVolviendo al menú anterior..." 0 0
                     break
                 fi
@@ -319,6 +320,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                     whiptail --title "Error" --msgbox "No has introducido un nombre de grupo.\nVolviendo al menú anterior..." 0 0
                     break
                 fi
+                #Antes de modificar el grupo, comprueba que existe y no es del sistema.
                 group_del_safetycheck=$(getent group $group_del | cut -d: -f3)
                 if [[ $group_del_safetycheck -lt 999 || $group_del_safetycheck -gt 65534 || -z "$group_del_safetycheck" ]]; then
                     whiptail --title "Error" --msgbox "Ese grupo de usuarios no existe o no se puede eliminar.\nVolviendo al menú anterior..." 0 0
@@ -345,6 +347,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 whiptail --textbox /dev/stdin 20 0 <<<"El grupo $group_info contiene los siguientes usuarios:\n\n$(getent group $group_info)"
                 ;;
             E)
+                #Unir usuario a grupo
                 user_join=$(whiptail --title "Añadir usuario a grupo" --inputbox "Introduce el nombre del usuario a añadir:" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$user_join" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
@@ -370,6 +373,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 fi
                 ;;
             F)
+                #Retirar usuario de grupo
                 user_remove=$(whiptail --title "Retirar usuario de grupo" --inputbox "Introduce el nombre del usuario a retirar:" 0 0 3>&1 1>&2 2>&3)
                 if [[ -z "$user_remove" ]]; then
                     whiptail --title "Error" --msgbox "No has introducido nada. Volviendo al menú anterior..." 0 0
@@ -395,6 +399,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 fi
                 ;;
             X)
+                #Salir
                 break
                 ;;
             *)
@@ -418,7 +423,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
                 whiptail --textbox /dev/stdin 20 0 <<<"Procesos encontrados:\n\n$(ps aux | grep $process_search)"
                 ;;
             C)
-                #Procesos que más consumen en este momento (max. 1X)
+                #Procesos que más consumen en este momento (max. 10)
                 whiptail --textbox /dev/stdin 20 0 <<<"10 procesos de mayor consumo:\n$(ps -eo %mem,%cpu,comm --sort=-%mem | head -n 11 | column -t)"
                 ;;
             X)
@@ -455,7 +460,7 @@ Puedes instalarlo con el comando '$ sudo apt install finger' o el equivalente de
             esac
         done
         ;;
-    E)
+    E) #Cambio de colores del menú
         while :; do
             color_change_menu
             case $colormenuoption in
